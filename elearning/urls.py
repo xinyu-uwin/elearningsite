@@ -7,6 +7,8 @@ urlpatterns = [
     # path('aboutus/', views.aboutus, name='aboutus'),
     path('course/', views.courselist, name='courselist'),
     path('course/<int:course_id>', views.CourseDetailView.as_view(), name='coursedetail'),
+    path('login/', views.userlogin, name='login'),
+    path('signout/', views.signout, name='signout'),
 
 
 ]

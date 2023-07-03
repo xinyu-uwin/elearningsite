@@ -8,62 +8,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>E-learning</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'elearning/bootstrap.min.css' %}"/>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#" style="position: relative; left: 20px">
-                <img src="{% static 'elearning/logo.png' %}" height="30" alt="e-learning logo">
-            </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav" style="position: relative;left: 20px">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'elearning:homepage' %}">Homepage</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'elearning:courselist' %}">All Courses</a>
-                    </li>
-                    {% comment %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'teachers' %}">All Teachers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
-                    </li>{% endcomment %}
-                </ul>
-                 <ul class="navbar-nav" style="position: absolute;right: 20px" >
-                    {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{% static 'elearning/avatar-default.svg' %}" width="30" height="30" class="rounded-circle" alt="{{ user.username }}">
-                            {{ user.username }}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Logout</a>
-                        </div>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sign Up</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </nav>
-    </header>
+ <header class="p-3 text-bg-dark bg-dark">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="{% url 'elearning:homepage' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" style="margin-right: 20px">
+          <img src="{% static 'elearning/logo.png' %}" height="30" alt="e-learning logo">
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{% url 'elearning:homepage' %}" class="nav-link px-2 text-white">Homepage</a></li>
+          <li><a href="{% url 'elearning:courselist' %}" class="nav-link px-2 text-white">All courses</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">About us</a></li>
+        </ul>
+
+
+
+
+           {% if user.is_authenticated %}
+          <div class="dropdown" >
+          <a href="#" class="d-block link-body-emphasis text-white dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ user.avatar }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle">
+              {{ user.username }}
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'elearning:signout' %}">Sign out</a></li>
+          </ul>
+        </div>
+          {% else %}
+          <div class="text-end">
+          <button type="button" class="btn btn-outline-light me-2" onclick="location.href='{% url 'elearning:login' %}'">Login</button>
+          <button type="button" class="btn btn-warning" >Sign-up</button>
+        </div>
+          {% endif %}
+
+      </div>
+    </div>
+  </header>
+
 
     <main role="main" class="container" style="padding-top: 75px;">
         {% block content %}{% endblock %}
     </main>
 
-   <footer class="footer mt-auto py-3 bg-dark" style="position: absolute; bottom: 0; width: 100%;">
+<footer class="footer mt-auto py-3 bg-body-tertiary" style="position: absolute; bottom: 0; width: 100%;">
+  <div class="container">
+    <span class="text-body-secondary">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
+  </div>
+</footer>
+{% comment %}
+   <footer class="footer mt-auto py-3 bg-light" style="position: absolute; bottom: 0; width: 100%;">
         <div class="container">
             <span class="text-muted">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
         </div>
     </footer>
+{% endcomment %}
+
+
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
