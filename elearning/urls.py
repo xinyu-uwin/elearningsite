@@ -3,9 +3,10 @@ from elearning import views
 
 app_name = 'elearning'
 urlpatterns = [
-    path('', views.homepage, name='homepage'),
+    path('', views.HomepageView.as_view(), name='homepage'),
     # path('aboutus/', views.aboutus, name='aboutus'),
-    path('course/<int:course_id>', views.coursedeatil, name='coursedetail'),
     path('course/', views.courselist, name='courselist'),
+    path('course/<int:course_id>', views.CourseDetailView.as_view(), name='coursedetail'),
+
 
 ]
