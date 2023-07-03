@@ -1,0 +1,70 @@
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en" style="position: relative; min-height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-learning</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="#" style="position: relative; left: 20px">
+                <img src="{% static 'elearning/logo.png' %}" height="30" alt="e-learning logo">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav" style="position: relative;left: 20px">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'elearning:homepage' %}">Homepage</a>
+                    </li>
+                    {% comment %}<li class="nav-item">
+                        <a class="nav-link" href="{% url 'courses' %}">All Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'teachers' %}">All Teachers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                    </li>{% endcomment %}
+                </ul>
+                 <ul class="navbar-nav" style="position: absolute;right: 20px" >
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{% static 'elearning/avatar-default.svg' %}" width="30" height="30" class="rounded-circle" alt="{{ user.username }}">
+                            {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container" style="padding-top: 75px;">
+        {% block content %}{% endblock %}
+    </main>
+
+   <footer class="footer mt-auto py-3 bg-dark" style="position: absolute; bottom: 0; width: 100%;">
+        <div class="container">
+            <span class="text-muted">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
+        </div>
+    </footer>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'elearning/base.html' %}
+{% block content %}
+<h1>All courses</h1>
+    <ul>
+    {% for course in courses %}
+        <li>
+            <a href="{% url 'elearning:coursedetail' course.id %}">
+                <img src="{{ course.image }}" alt="{{ course.name }}">
+                <p>{{ course.name }}</p>
+            </a>
+            <p>By: {{ course.teacher }}</p>
+            <p>Price: {{ course.price }}</p>
+        </li>
+    {%  endfor %}
+    </ul>
+{% endblock %}

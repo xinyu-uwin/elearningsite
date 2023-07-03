@@ -1,0 +1,8 @@
+{% extends 'elearning/base.html' %}
+{% block content %}
+<h1>{{ course.name}}</h1>
+    <p>Description: {{ course.description }}</p>
+    <p>By: {{ course.teacher }}</p>
+    <p><img src="{{ course.image }}"></p>
+    <p>Price: {{ course.price }}</p>
+{% endblock %}
