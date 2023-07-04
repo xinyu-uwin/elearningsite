@@ -1,13 +1,13 @@
 import datetime
 
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Student(User):
     avatar = models.ImageField(default='static/elearning/avatar-default.svg')
-    bio = models.TextField(blank=True)
+    bios = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     is_premier = models.BooleanField(default=False)

@@ -31,9 +31,6 @@
           <a href="#" class="d-block link-body-emphasis text-white dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{ user.avatar }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle">
               {{ user.username }}
-              {% if user.is_premier %}
-              <span class="badge text-bg-warning rounded-pill">Premier</span>
-                  {% endif %}
           </a>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="#">Profile</a></li>
