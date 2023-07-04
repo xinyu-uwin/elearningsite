@@ -47,3 +47,6 @@ def userlogin(request):
 def signout(request):
     logout(request)
     return redirect('elearning:homepage')
+
+def signup(request):
+    return  render(request,'elearning/signup.html')
