@@ -1,13 +1,13 @@
 import datetime
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 
 
 # Create your models here.
-class Student(User):
+class MyUser(User):
     avatar = models.ImageField(default='static/elearning/avatar-default.svg')
-    bios = models.TextField(blank=True)
+    bio = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     is_premier = models.BooleanField(default=False)
@@ -33,7 +33,7 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
     image = models.ImageField(default='elearning:static/elearning/course-default.png')
-    teacher = models.ForeignKey(Student, related_name='course_teacher',on_delete=models.CASCADE)
+    teacher = models.ForeignKey(MyUser, related_name='course_teacher',on_delete=models.CASCADE)
     category = models.ManyToManyField(Category,related_name='course_category')
     content = models.JSONField()
     price = models.DecimalField(max_digits=5,decimal_places=2)
@@ -54,7 +54,7 @@ class Payment(models.Model):
         ('2', 'Pending'),
     ]
     time = models.DateTimeField(default=datetime.datetime)
-    student = models.ForeignKey(Student, related_name='payment_student',on_delete=models.PROTECT)
+    student = models.ForeignKey(MyUser, related_name='payment_student',on_delete=models.PROTECT)
     type = models.CharField(max_length=1,choices=TYPE_CHOICE)
     course = models.ForeignKey(Course,related_name='payment_course',on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=5,decimal_places=2)

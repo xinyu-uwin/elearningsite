@@ -1,3 +1,5 @@
+from logging import log
+
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import *
 from django.views import View
