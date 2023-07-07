@@ -2,10 +2,17 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+User._meta.get_field('email').blank = False
+User._meta.get_field('email').null = False
+User._meta.get_field('first_name').blank = False
+User._meta.get_field('first_name').null = False
+User._meta.get_field('last_name').blank = False
+User._meta.get_field('last_name').null = False
 
 
 # Create your models here.
 class Student(User):
+    email = { 'blank': False}
     avatar = models.ImageField(default='static/elearning/avatar-default.svg')
     bios = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
