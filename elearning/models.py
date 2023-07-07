@@ -12,8 +12,7 @@ User._meta.get_field('last_name').null = False
 
 # Create your models here.
 class Student(User):
-    email = { 'blank': False}
-    avatar = models.ImageField(default='static/elearning/avatar-default.svg')
+    avatar = models.ImageField(default='elearning:/static/elearning/avatar-default.svg')
     bios = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)

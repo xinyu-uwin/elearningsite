@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.core import serializers
 from django.shortcuts import *
 from django.views import View
-from .models import *
 from .forms import *
-
-
 from .models import *
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 # Create your views here.
@@ -39,6 +39,9 @@ def userlogin(request):
 
         if user is not None:
             login(request,user)
+            student = Student.objects.get(username=username)
+            request.session["avatar"] = str(student.avatar)
+            request.session["is_premier"]=student.is_premier
             return redirect('elearning:homepage')
         else:
             # Invalid login credentials, return error message

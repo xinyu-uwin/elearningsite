@@ -3,14 +3,19 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 <!DOCTYPE html>
-<html lang="en" style="position: relative; min-height: 100%;">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title%}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/bootstrap.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/sign-in.css' %}"/>
+
 </head>
+
+
+
+<body class="d-flex flex-column h-100">
  <header class="p-3 text-bg-dark bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -30,8 +35,11 @@
            {% if user.is_authenticated %}
           <div class="dropdown" >
           <a href="#" class="d-block link-body-emphasis text-white dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ user.avatar }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle">
+            <img src="{{ request.session.avatar }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle">
               {{ user.username }}
+              {% if request.session.is_premier %}
+                  <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Premier</span>
+                  {% endif %}
           </a>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -51,7 +59,7 @@
   </header>
 
 
-    <main role="main" class="container" style="padding-top: 75px;">
+    <main role="main" class="container" style="padding-top: 30px;">
         {% block content %}{% endblock %}
     </main>
 
