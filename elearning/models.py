@@ -38,7 +38,7 @@ class Category(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
-    image = models.ImageField(default='elearning:static/elearning/course-default.png')
+    image = models.ImageField(default='elearning:/static/elearning/course-default.png')
     teacher = models.ForeignKey(Student, related_name='course_teacher',on_delete=models.CASCADE)
     category = models.ManyToManyField(Category,related_name='course_category')
     content = models.JSONField()

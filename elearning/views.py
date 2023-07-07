@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.core import serializers
 from django.shortcuts import *
 from django.views import View
 from .forms import *

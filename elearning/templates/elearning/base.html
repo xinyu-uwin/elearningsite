@@ -3,70 +3,79 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title%}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/bootstrap.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/sign-in.css' %}"/>
 
 </head>
 
 
-
 <body class="d-flex flex-column h-100">
- <header class="p-3 text-bg-dark bg-dark">
+<header class="p-3 text-bg-dark bg-dark">
     <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="{% url 'elearning:homepage' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" style="margin-right: 20px">
-          <img src="{% static 'elearning/logo.png' %}" height="30" alt="e-learning logo">
-        </a>
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{% url 'elearning:homepage' %}"
+               class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+               style="margin-right: 20px">
+                <img src="{% static 'elearning/logo.png' %}" height="30" alt="e-learning logo">
+            </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{% url 'elearning:homepage' %}" class="nav-link px-2 text-white">Homepage</a></li>
-          <li><a href="{% url 'elearning:courselist' %}" class="nav-link px-2 text-white">All courses</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About us</a></li>
-        </ul>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'elearning:homepage' %}" class="nav-link px-2 text-white">Homepage</a></li>
+                <li><a href="{% url 'elearning:courselist' %}" class="nav-link px-2 text-white">All courses</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">About us</a></li>
+            </ul>
 
 
 
 
-           {% if user.is_authenticated %}
-          <div class="dropdown" >
-          <a href="#" class="d-block link-body-emphasis text-white dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ request.session.avatar }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle">
-              {{ user.username }}
-              {% if request.session.is_premier %}
-                  <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Premier</span>
-                  {% endif %}
-          </a>
-          <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'elearning:signout' %}">Sign out</a></li>
-          </ul>
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <a href="#" class="d-block link-body-emphasis text-white dropdown-toggle text-decoration-none"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ request.session.avatar }}" alt="{{ user.username }}" width="32" height="32"
+                             style="border: white; border-style: solid; border-width: 1px" class="rounded-circle">
+                        {{ user.username }}
+                        {% if request.session.is_premier %}
+                            <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Premier</span>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'elearning:signout' %}">Sign out</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2"
+                            onclick="location.href='{% url 'elearning:login' %}'">Login
+                    </button>
+                    <button type="button" class="btn btn-warning"
+                            onclick="location.href='{% url 'elearning:signup' %}'">Sign-up
+                    </button>
+                </div>
+            {% endif %}
+
         </div>
-          {% else %}
-          <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2" onclick="location.href='{% url 'elearning:login' %}'">Login</button>
-          <button type="button" class="btn btn-warning" onclick="location.href='{% url 'elearning:signup' %}'">Sign-up</button>
-        </div>
-          {% endif %}
-
-      </div>
     </div>
-  </header>
+</header>
 
 
-    <main role="main" class="container" style="padding-top: 30px;">
-        {% block content %}{% endblock %}
-    </main>
+<main role="main" class="container" style="padding-top: 30px;">
+    {% block content %}{% endblock %}
+</main>
 
 <footer class="footer mt-auto py-3 bg-body-tertiary" style="position: relative; bottom: 0; width: 100%;">
-  <div class="container">
-    <span class="text-body-secondary">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
-  </div>
+    <div class="container">
+        <span class="text-body-secondary">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
+    </div>
 </footer>
 {% comment %}
    <footer class="footer mt-auto py-3 bg-light" style="position: absolute; bottom: 0; width: 100%;">
@@ -77,8 +86,7 @@
 {% endcomment %}
 
 
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 </html>
