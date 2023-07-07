@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
 User._meta.get_field('first_name').blank = False
@@ -12,7 +13,7 @@ User._meta.get_field('last_name').null = False
 
 # Create your models here.
 class Student(User):
-    avatar = models.ImageField(default='elearning:/static/elearning/avatar-default.svg')
+    avatar = models.ImageField(default='/static/elearning/avatar-default.svg')
     bios = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
@@ -27,6 +28,16 @@ class Student(User):
     class Meta:
         verbose_name = 'Student'
 
+    # auto set is_premier status
+    def save(self, *args, **kwargs):
+        if self.premier_expiration:
+            if datetime.date.today() <= self.premier_expiration:
+                self.is_premier = True
+            else:
+                self.is_premier = False
+        super().save(*args, **kwargs)
+
+
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
@@ -38,7 +49,7 @@ class Category(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
-    image = models.ImageField(default='elearning:/static/elearning/course-default.png')
+    image = models.ImageField(default='/static/elearning/course-default.png')
     teacher = models.ForeignKey(Student, related_name='course_teacher',on_delete=models.CASCADE)
     category = models.ManyToManyField(Category,related_name='course_category')
     content = models.JSONField()

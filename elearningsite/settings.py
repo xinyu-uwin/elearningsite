@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'elearning.apps.ElearningConfig',
     'bootstrap5',
+    'django_bootstrap_icons',
+    'stripe',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #AUTH_USER_MODEL='elearning.Student'
+
+#stripe
+STRIPE_PUBLISHABLE_KEY= 'pk_test_51ND8sLLYOpzhEaWbhCLLEswRTiKauWLTjjEMsbWblXRpmZfpQs3TvcL7GKh7BqujbccaDNHK8tJFrNH5Ze0qhpuQ00wWBtqD5o'
+STRIPE_SECRET_KEY = 'sk_test_51ND8sLLYOpzhEaWbofRmpgUVjNzc5A6lDRF0IzD8SiYZlkH3rsOhK5g8QpJE6uxCEbfmyidJC05javwLmyoMKMyZ0090az8CIh'

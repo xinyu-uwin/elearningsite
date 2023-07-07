@@ -1,11 +1,40 @@
 {% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
 
-{% block title %}{{ course.name}}{% endblock %}
+
+{% block title %}{{ course.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ course.name}}</h1>
+    <h1>{{ course.name }}</h1>
     <p>Description: {{ course.description }}</p>
     <p>By: {{ course.teacher }}</p>
-    <p><img src="{{ course.image }}"></p>
+    <p><img src="{{ course.image }}" alt="{{ course.name }}"></p>
     <p>Price: {{ course.price }}</p>
+<form id="buyCourse" action="{% url 'elearning:create-checkout-session' course.id %}" method="post"
+                      style="display: none">
+                    {% csrf_token %}
+                    <button class="btn btn-dark rounded-pill px-3" type="submit">Buy this course</button>
+                </form>
+    {#    You may add an if to determin if this has been bought#}
+    {% if course.allow_premier %}
+        {% if user.is_authenticated %}
+            {% elif request.session.is_premier %}
+                <button class="btn btn-primary d-inline-flex align-items-center" type="button">
+                    View Course Content
+                    {% bs_icon 'arrow-right-short' size='2em' %}
+                </button>
+
+            {% endif %}
+
+                <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
+                </button>
+                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative">Upgrade to
+                    Premier
+                </button>
+
+    {% else %}
+        <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
+                </button>
+    {% endif %}
+
 {% endblock %}

@@ -1,11 +1,13 @@
-from django.contrib import messages
+import stripe
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import *
 from django.views import View
+from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from elearningsite import settings
 from .forms import *
 from .models import *
-from django.contrib.auth import get_user_model
-User = get_user_model()
+
 
 
 # Create your views here.
@@ -66,7 +68,9 @@ def signup(request):
             password = form.cleaned_data["password2"]
             user = authenticate(request,username=username,password=password)
             login(request, user)
-            messages.warning(request, 'Your settings have been saved!')
+            student = Student.objects.get(username=username)
+            request.session["avatar"] = str(student.avatar)
+            request.session["is_premier"] = student.is_premier
             return redirect('elearning:homepage')
 
         else:
@@ -76,3 +80,44 @@ def signup(request):
         form = SignUpForm()
 
     return render(request,'elearning/signup.html',{'form':form,'error':error})
+
+
+class CreateCheckoutSessionView(View):
+
+    def post(self, request, *args, **kwargs):
+        course = Course.objects.get(id=self.kwargs['course_id'])
+        if request.user.is_authenticated:
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+
+            domain = "https://yourdomain.com"
+            if settings.DEBUG:
+                domain = "http://127.0.0.1:8000"
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'cad',
+                        'unit_amount': int(course.price*100),
+                        'product_data': {
+                            'name': course.name,
+                            'images': ['https://wiki.djcsyn.top/download/attachments/4718593/course-default.png'],
+
+                            'description': 'By: %s %s'%(course.teacher.first_name,course.teacher.last_name),
+
+                        },
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=domain + '/success/',
+                cancel_url=domain + '/cancel/',
+            )
+            return redirect(checkout_session.url)
+        else:
+            return redirect('elearning:login')
+
+class SuccessView(TemplateView):
+    template_name = "elearning/success.html"
+
+class CancelView(TemplateView):
+    template_name = "elearning/cancel.html"
