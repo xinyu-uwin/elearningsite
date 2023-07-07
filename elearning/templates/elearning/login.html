@@ -7,7 +7,7 @@
 <main class="form-signin w-100 m-auto">
   <form action="{% url 'elearning:login' %}" method="post">{% csrf_token %}
     <img class="mb-4" src="{% static 'elearning/logo-blue.png' %}" alt="E-learning" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 fw-normal">Please login</h1>
 {%  if error %}
     <p class="text-warning"> {{ error }}</p>
     {% endif %}
