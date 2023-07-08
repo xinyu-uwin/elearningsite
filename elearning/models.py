@@ -46,6 +46,8 @@ class Category(models.Model):
         return self.name
 
 
+
+
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
@@ -59,6 +61,19 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+class PremiePlan(models.Model):
+    name = models.CharField(max_length=10)
+    days = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=5,decimal_places=2)
+    tag = models.CharField(max_length=5,blank=True,null=True)
+    daily = models.DecimalField(max_digits=5,decimal_places=2,default=0.00)
+    def __str__(self):
+        display = str(self.days)+'days' + str(self.price)
+        return display
+
+    def save(self, *args, **kwargs):
+        self.daily = self.price/self.days
+        super().save(*args, **kwargs)
 
 class Payment(models.Model):
     TYPE_CHOICE =[
@@ -73,8 +88,8 @@ class Payment(models.Model):
     time = models.DateTimeField(default=datetime.datetime)
     student = models.ForeignKey(Student, related_name='payment_student',on_delete=models.PROTECT)
     type = models.CharField(max_length=1,choices=TYPE_CHOICE)
-    course = models.ForeignKey(Course,related_name='payment_course',on_delete=models.PROTECT)
-    amount = models.DecimalField(max_digits=5,decimal_places=2)
+    course = models.ForeignKey(Course,related_name='payment_course',on_delete=models.PROTECT,blank=True,null=True)
+    plan = models.ForeignKey(PremiePlan,related_name='payment_plan',on_delete=models.PROTECT,blank=True,null=True)
     status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=0)
 
     def __str__(self):

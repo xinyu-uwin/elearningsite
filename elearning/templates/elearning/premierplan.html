@@ -1,0 +1,49 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+
+
+{% block title %}Choose a Premier plan{% endblock %}
+
+{% block content %}
+
+
+    <div class="d-flex align-items-center justify-content-center">
+        <h2 class="fw-normal text-warning-emphasis bg-warning-subtle rounded-pill" style="width: fit-content;padding-left: 20px;padding-right: 20px" >Premier</h2>
+    <h1>&ensp;Plans</h1>
+    </div>
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <p class="fs-5 text-body-secondary">Premier members can access all the courses* with no extra fee.</p>
+        <p class="fs-5 text-body-secondary">Special identity badge <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Premier</span> after your name.</p>
+        <p class="fs-5 text-body-secondary">And more special benefits after...</p>
+    <small>*Some course may need to purchase separately.</small>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    {% for plan in plans %}
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 d-flex align-items-center justify-content-center" >
+            <h4 class="my-0 fw-normal">{{ plan.name }}&ensp;</h4>
+              {% if plan.tag %}
+                  <span class="badge text-bg-danger rounded-pill">{{ plan.tag }}</span>
+              {% endif %}
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">CA${{ plan.price }}</h1>
+            <ul class="list-unstyled mt-3 mb-4 text-secondary">
+              <li>Free access for {{ plan.days }} days</li>
+              <li>Only CA${{ plan.daily }}/day</li>
+            </ul>
+              <form id="buyPremier" action="{% url 'elearning:create-checkout-session' 'p' plan.id %}" method="post"
+                      >
+                    {% csrf_token %}
+                    <button class="w-100 btn btn-lg btn-outline-primary" type="submit">Checkout</button>
+                </form>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
