@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -10,10 +11,17 @@ User._meta.get_field('first_name').null = False
 User._meta.get_field('last_name').blank = False
 User._meta.get_field('last_name').null = False
 
+def rename_avatar(instance, filename):
+    # get the filename extension
+    ext = filename.split('.')[-1]
+    # Use user's username for filename, with the original extension
+    filename = f"{instance.username}.{ext}"
+    # return the new filename including the path
+    return os.path.join('avatars', filename)
 
 # Create your models here.
 class Student(User):
-    avatar = models.ImageField(default='/static/elearning/avatar-default.svg')
+    avatar = models.ImageField(upload_to=rename_avatar,default='avatars/avatar-default.svg')
     bios = models.TextField(blank=True)
     billing_address = models.CharField(max_length=300,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)

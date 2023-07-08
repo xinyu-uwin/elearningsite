@@ -1,0 +1,123 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+
+
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block content %}
+    <main class="d-flex flex-nowrap" style="height: fit-content">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 220px;">
+
+
+            <span class="fs-4 align-items-center">My Account</span>
+
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item align-middle">
+                    <a href="#" class="nav-link active align-baseline" aria-current="page">
+                        {% bs_icon 'person-bounding-box' %}
+                        &ensp;Profile
+                    </a>
+                </li>
+
+                <li class="nav-item align-middle">
+                    <a href="#" class="nav-link align-baseline" aria-current="page">
+                        {% bs_icon 'journals' %}
+                        &ensp;Courses
+                    </a>
+                </li>
+            </ul>
+
+
+        </div>
+        <main class="container" style="margin: 30px;position: relative">
+        {% if msg %}
+            <div class="alert alert-success" role="alert">
+                {{ msg }}</div>
+        {% endif %}
+<div class="d-flex inline align-items-baseline ">
+            <h1 class="h3 mb-3 fw-normal">Your Profile&ensp;</h1>
+
+        <div class="input-group align-content-center" style="max-width:fit-content;position: relative">
+                <span class="input-group-text">Username</span>
+            <span type="text" class="form-control" id="username"  disabled>{{ user.username }}</span>
+              </div>
+</div>
+            <p></p>
+
+            <form action="{% url 'elearning:profile' %}" style="max-width: 600px" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <p><label for="avatar" class="form-label">Your avatar</label></p>
+
+                        <img src="{{ profile_form.avatar.value.url }}" alt="" width="120" height="120" class="rounded-circle me-4"
+                             style="border: #e2e3e5;border-style:solid;border-width: 1px">
+                    </div>
+                    <div >
+
+{{ profile_form.avatar }}
+
+                    </div>
+                    <hr class="my-4">
+
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">First name</label>
+                            {{ user_form.first_name }}
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Last name</label>
+                            {{ user_form.last_name }}
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email</label>
+                            {{ user_form.email }}
+                            <div class="invalid-feedback">
+                                Please enter a valid email address for shipping updates.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="bios" class="form-label">Bios</label>
+                            {{ profile_form.bios }}
+                            <div class="invalid-feedback">
+                                Please enter your Bios.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="address" class="form-label">Address</label>
+                            {{ profile_form.billing_address }}
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="phone" class="form-label">Phone number</label>
+                            {{ profile_form.phone_number }}
+                            <div class="invalid-feedback">
+                                Please enter your Phone number.
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <hr class="my-4">
+
+                     {% if errors %}
+                {% for key,value in errors.items %}
+                    <label class="text-warning">{{ value }}</label>
+                {% endfor %}
+            {% endif %}
+
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Update Profile</button>
+                </div>
+            </form>
+
+        </main>
+    </main>
+{% endblock %}

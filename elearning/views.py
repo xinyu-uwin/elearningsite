@@ -44,7 +44,7 @@ def userlogin(request):
         if user is not None:
             login(request,user)
             student = Student.objects.get(username=username)
-            request.session["avatar"] = str(student.avatar)
+            request.session["avatar"] = str(student.avatar.url)
             request.session["is_premier"]=student.is_premier
             return redirect('elearning:homepage')
         else:
@@ -72,7 +72,7 @@ def signup(request):
             user = authenticate(request,username=username,password=password)
             login(request, user)
             student = Student.objects.get(username=username)
-            request.session["avatar"] = str(student.avatar)
+            request.session["avatar"] = str(student.avatar.url)
             request.session["is_premier"] = student.is_premier
             return redirect('elearning:homepage')
 
@@ -185,3 +185,28 @@ class CancelView(TemplateView):
 def premier(request):
     plans = PremiePlan.objects.all()
     return render(request,'elearning/premierplan.html',{"plans":plans})
+
+@login_required()
+def profile(request):
+    student = Student.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=student)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            msg = 'Successfully updated your profile'
+            request.session["avatar"] = str(student.avatar.url)
+            user_form = UserForm(instance=request.user)
+            profile_form = ProfileForm(instance=student)
+            return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form, "msg": msg})
+        else:
+            errors = user_form.errors
+            errors.update(profile_form.errors)
+            return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form, "errors": errors})
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=student)
+        print(profile_form)
+    return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form})

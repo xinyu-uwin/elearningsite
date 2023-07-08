@@ -5,6 +5,8 @@
 {% block title %}{{ course.name }}{% endblock %}
 
 {% block content %}
+        <main role="main" class="container" style="padding: 30px;">
+
     <h1>{{ course.name }}</h1>
     <p>Description: {{ course.description }}</p>
     <p>By: {{ course.teacher }}</p>
@@ -16,24 +18,36 @@
                     <button class="btn btn-dark rounded-pill px-3" type="submit">Buy this course</button>
                 </form>
     {#    You may add an if to determin if this has been bought#}
-    {% if course.allow_premier %}
-        {% if user.is_authenticated %}
-            {% elif request.session.is_premier %}
+
+    {% if user.is_authenticated %}
+        {% if course.allow_premier %}
+            {% if request.session.is_premier %}
                 <button class="btn btn-primary d-inline-flex align-items-center" type="button">
                     View Course Content
                     {% bs_icon 'arrow-right-short' size='2em' %}
                 </button>
-
-            {% endif %}
+            {% else %}
 
                 <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
                 </button>
-                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative" onclick="location.href={% url 'elearning:premier' %}">
+                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                        onclick="location.href={% url 'elearning:premier' %}">
                     Upgrade to Premier
                 </button>
+            {% endif %}
 
-    {% else %}
-        <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course</button>
+        {% else %}
+            <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
+            </button>
+
+        {% endif %}
+        {% else %}
+        <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
+            </button>
+            <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                    onclick="location.href={% url 'elearning:premier' %}">
+                Upgrade to Premier
+            </button>
     {% endif %}
-
+        </main>
 {% endblock %}

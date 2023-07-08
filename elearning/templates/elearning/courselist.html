@@ -1,6 +1,8 @@
 {% extends 'elearning/base.html' %}
 {% block title %}All Courses - Elearning{% endblock %}
 {% block content %}
+        <main role="main" class="container" style="padding: 30px;">
+
     <h1>All courses</h1>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -36,16 +38,5 @@
         {% endfor %}
 
     </div>
-    {% comment %} <ul>
-
-        <li>
-            <a href="{% url 'elearning:coursedetail' course.id %}">
-                <img src="{{ course.image }}" alt="{{ course.name }}">
-                <p>{{ course.name }}</p>
-            </a>
-            <p>By: {{ course.teacher }}</p>
-            <p>Price: {{ course.price }}</p>
-        </li>
-
-    </ul>{% endcomment %}
+        </main>
 {% endblock %}

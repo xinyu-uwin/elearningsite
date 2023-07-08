@@ -46,7 +46,7 @@
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'elearning:profile' %}">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -69,11 +69,11 @@
 </header>
 
 
-<main role="main" class="container" style="padding-top: 30px;">
+{#<main role="main" class="container" style="padding-top: 30px;">#}
     {% block content %}{% endblock %}
-</main>
 
-<footer class="footer mt-auto py-3 bg-body-tertiary" style="position: relative; bottom: 0; width: 100%;">
+
+<footer class="footer mt-auto py-3 bg-body-tertiary" style=" border: #e2e3e5; border-style: solid; border-width: 1px">
     <div class="container">
         <span class="text-body-secondary">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
     </div>

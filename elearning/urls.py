@@ -1,3 +1,4 @@
+from django.conf.urls.static import static
 from django.urls import path
 from elearning import views
 from .views import *
@@ -18,6 +19,7 @@ urlpatterns = [
     path("success/", SuccessView.as_view(), name="success"),
     path("cancel/", CancelView.as_view(), name="cancel"),
     path("premier/", views.premier, name="premier"),
+    path("profile/", views.profile, name="profile"),
 
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
