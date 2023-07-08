@@ -1,5 +1,6 @@
 import datetime
 import os
+import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -14,8 +15,8 @@ User._meta.get_field('last_name').null = False
 def rename_avatar(instance, filename):
     # get the filename extension
     ext = filename.split('.')[-1]
-    # Use user's username for filename, with the original extension
-    filename = f"{instance.username}.{ext}"
+    # generate a unique UUID and convert it to a string for the filename
+    filename = f"{uuid.uuid4()}.{ext}"
     # return the new filename including the path
     return os.path.join('avatars', filename)
 
