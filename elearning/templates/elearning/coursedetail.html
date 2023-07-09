@@ -5,53 +5,54 @@
 {% block title %}{{ course.name }}{% endblock %}
 
 {% block content %}
-        <main role="main" class="container" style="padding: 30px;">
+    <main role="main" class="container py-4">
 
-    <h1>{{ course.name }}</h1>
-    <p>Description: {{ course.description }}</p>
-    <p>By: {{ course.teacher }}</p>
-    <div style="position: relative; width: 100%; padding-top: 56.25%;">
-                                <img class="bd-placeholder-img card-img-top"
-                                     style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
-                                     src="{{ course.image.url }}">
-                            </div>
-    <p>Price: {{ course.price }}</p>
-<form id="buyCourse" action="{% url 'elearning:create-checkout-session' 'c' course.id %}" method="post"
-                      style="display: none">
-                    {% csrf_token %}
-                    <button class="btn btn-dark rounded-pill px-3" type="submit">Buy this course</button>
-                </form>
-    {#    You may add an if to determin if this has been bought#}
+        <h1>{{ course.name }}</h1>
+        <p>Description: {{ course.description }}</p>
+        <p>By: {{ course.teacher }}</p>
+        <div style="position: relative; width: 100%; padding-top: 56.25%;">
+            <img class="bd-placeholder-img card-img-top"
+                 style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+                 src="{{ course.image.url }}">
+        </div>
+        <p>Price: {{ course.price }}</p>
+        <form id="buyCourse" action="{% url 'elearning:create-checkout-session' 'c' course.id %}" method="post"
+              style="display: none">
+            {% csrf_token %}
+            <button class="btn btn-dark rounded-pill px-3" type="submit">Buy this course</button>
+        </form>
+        {#    You may add an if to determin if this has been bought#}
 
-    {% if user.is_authenticated %}
-        {% if course.allow_premier %}
-            {% if request.session.is_premier %}
-                <button class="btn btn-primary d-inline-flex align-items-center" type="button">
-                    View Course Content
-                    {% bs_icon 'arrow-right-short' size='2em' %}
-                </button>
+        {% if user.is_authenticated %}
+            {% if course.allow_premier %}
+                {% if request.session.is_premier %}
+                    <button class="btn btn-primary d-inline-flex align-items-center" type="button">
+                        View Course Content
+                        {% bs_icon 'arrow-right-short' size='2em' %}
+                    </button>
+                {% else %}
+
+                    <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this
+                        course
+                    </button>
+                    <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                            onclick="location.href={% url 'elearning:premier' %}">
+                        Upgrade to Premier
+                    </button>
+                {% endif %}
+
             {% else %}
-
                 <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
                 </button>
-                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
-                        onclick="location.href={% url 'elearning:premier' %}">
-                    Upgrade to Premier
-                </button>
-            {% endif %}
 
+            {% endif %}
         {% else %}
             <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
-            </button>
-
-        {% endif %}
-        {% else %}
-        <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
             </button>
             <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
                     onclick="location.href={% url 'elearning:premier' %}">
                 Upgrade to Premier
             </button>
-    {% endif %}
-        </main>
+        {% endif %}
+    </main>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'elearning/base.html' %}
 {% block title %}All Courses - Elearning{% endblock %}
 {% block content %}
-    <main role="main" class="container" style="padding: 30px;">
+    <main role="main" class="container py-4" style="position: relative" >
 
-        <h1>All courses</h1>
+        <h1 class="fs-2 py-2">All courses</h1>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for course in courses %}

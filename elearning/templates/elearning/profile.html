@@ -5,11 +5,12 @@
 
 {% block title %}Profile - {{ user.username }}{% endblock %}
 {% block content %}
-    <main class="d-flex flex-nowrap" style="height: fit-content">
+    <main class="d-flex flex-nowrap">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 220px;">
 
 
-            <span class="fs-4 align-items-center">My Account</span>
+            <span class="fs-4 py-2 align-items-center">My Account</span>
+            <button class="btn fs-6 btn-outline-primary  ">Teacher portal</button>
 
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -30,33 +31,35 @@
 
 
         </div>
-        <main class="container" style="margin: 30px;position: relative">
-        {% if msg %}
-            <div class="alert alert-success" role="alert">
-                {{ msg }}</div>
-        {% endif %}
-<div class="d-flex inline align-items-baseline ">
-            <h1 class="h3 mb-3 fw-normal">Your Profile&ensp;</h1>
+        <div class="container p-4" style="overflow-y: auto;height: 100%;">
+            {% if msg %}
+                <div class="col-12 alert alert-success" role="alert" style="max-width: 600px">
+                    {{ msg }}</div>
+            {% endif %}
+            <div class="d-flex align-items-center ">
+                <Span class="fs-2 mb-3 fw-normal align-self-center">Your Profile&ensp;</Span>
 
-        <div class="input-group align-content-center" style="max-width:fit-content;position: relative">
-                <span class="input-group-text">Username</span>
-            <span type="text" class="form-control" id="username"  disabled>{{ user.username }}</span>
-              </div>
-</div>
-            <p></p>
+                <div class="input-group mb-3 align-content-center " style="width:fit-content;">
+                    <span class="input-group-text ">Username</span>
+                    <span type="text" class="form-control" id="username" disabled>{{ user.username }}</span>
+                </div>
+            </div>
 
-            <form action="{% url 'elearning:profile' %}" style="max-width: 600px" method="post" enctype="multipart/form-data">
+
+            <form action="{% url 'elearning:profile' %}" style="max-width: 600px" method="post"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <p><label for="avatar" class="form-label">Your avatar</label></p>
 
-                        <img src="{{ profile_form.avatar.value.url }}" alt="" width="120" height="120" class="rounded-circle me-4"
+                        <img src="{{ profile_form.avatar.value.url }}" alt="" width="120" height="120"
+                             class="rounded-circle me-4"
                              style="border: #e2e3e5;border-style:solid;border-width: 1px">
                     </div>
-                    <div >
+                    <div>
 
-{{ profile_form.avatar }}
+                        {{ profile_form.avatar }}
 
                     </div>
                     <hr class="my-4">
@@ -107,17 +110,17 @@
                     </div>
                     <hr class="my-4">
 
-                     {% if errors %}
-                {% for key,value in errors.items %}
-                    <label class="text-warning">{{ value }}</label>
-                {% endfor %}
-            {% endif %}
+                    {% if errors %}
+                        {% for key,value in errors.items %}
+                            <label class="text-warning">{{ value }}</label>
+                        {% endfor %}
+                    {% endif %}
 
 
                     <button class="w-100 btn btn-primary btn-lg" type="submit">Update Profile</button>
                 </div>
             </form>
 
-        </main>
+        </div>
     </main>
 {% endblock %}

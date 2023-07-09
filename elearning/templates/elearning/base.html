@@ -16,9 +16,9 @@
 </head>
 
 
-<body class="d-flex flex-column h-100">
-<header class="p-3 text-bg-dark bg-dark">
-    <div class="container">
+<body class="d-flex " style="display: flex; flex-direction: column;">
+<header class="p-3 text-bg-dark bg-dark" >
+    <div class="container" >
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="{% url 'elearning:homepage' %}"
                class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
@@ -70,22 +70,15 @@
 </header>
 
 
-{#<main role="main" class="container" style="padding-top: 30px;">#}
+
     {% block content %}{% endblock %}
 
 
-<footer class="footer mt-auto py-3 bg-body-tertiary" style=" border: #e2e3e5; border-style: solid; border-width: 1px">
+<footer class="footer mt-auto py-1 bg-body-tertiary" style="border: #e2e3e5; border-style: solid; border-width: 1px">
     <div class="container">
         <span class="text-body-secondary">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
     </div>
 </footer>
-{% comment %}
-   <footer class="footer mt-auto py-3 bg-light" style="position: absolute; bottom: 0; width: 100%;">
-        <div class="container">
-            <span class="text-muted">&copy; 8347-Group 6 2023. All Rights Reserved.</span>
-        </div>
-    </footer>
-{% endcomment %}
 
 
 <!-- jQuery library -->

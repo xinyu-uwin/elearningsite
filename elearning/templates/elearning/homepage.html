@@ -1,4 +1,5 @@
 {% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
 {% block title %}Elearning{% endblock %}
 {% block content %}
     <main>
@@ -7,7 +8,7 @@
                 {% for rec_course in rec_courses %}
                     {% if forloop.counter0 == 0 %}
                         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
-                                class="active" aria-current="true" aria-label="Slide {{ forloop.counter }}" ></button>
+                                class="active" aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
                     {% else %}
                         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
                                 aria-label="Slide {{ forloop.counter }}"></button>
@@ -18,31 +19,33 @@
             <div class="carousel-inner">
 
                 {% for rec_course in rec_courses %}
-            {% if forloop.counter0 == 0 %}
-                <div class="carousel-item active justify-content-center" style="background-color: #0b5ed7">
-            {% else %}
-                <div class="carousel-item" style="background-color: #0b5ed7">
-            {% endif %}
+                    {% if forloop.counter0 == 0 %}
+                        <div class="carousel-item active justify-content-center" style="background-color: #6c757d">
+                    {% else %}
+                        <div class="carousel-item" style="background-color: #6c757d">
+                    {% endif %}
 
-            <div style="
-                background-image: url('{{ rec_course.course.image.url }}');
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                height: 100%;
-            ">
-                <div class="container">
-                    <div class="carousel-caption text-start" style="text-shadow: 2px 2px 4px rgba(33, 33, 33, 0.6);" >
-                        <h1 style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.name }}</h1>
-                        <p class="opacity-85"
-                           style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.description }}.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Course Detail</a></p>
+                <div style="
+                        background-image: url('{{ rec_course.course.image.url }}');
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        height: 100%;
+                        ">
+                    <div class="container">
+                        <div class="carousel-caption text-start"
+                             style="text-shadow: 2px 2px 4px rgba(33, 33, 33, 0.6);">
+                            <h1 style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.name }}</h1>
+                            <p class="opacity-85"
+                               style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.description }}.</p>
+                            <p><a class="btn btn-lg btn-primary"
+                                  href="{% url 'elearning:coursedetail' rec_course.course.id %}">Course Detail</a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-        {% endfor %}
+                </div>
+                {% endfor %}
 
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
@@ -54,7 +57,19 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-            <div role="main" class="container" style="padding-bottom: 30px;">
+
+        </div>
+   <div class="container  bg-body-tertiary rounded-3">
+    <div class="d-flex py-4 align-items-center justify-content-center">
+        <span class="fs-4 px-1 text-secondary align-self-center">Join</span>
+        <span class="fs-4 px-3 text-warning-emphasis bg-warning-subtle rounded-pill align-self-center" >Premier</span>
+        <span class="fs-4 px-3 text-secondary align-self-center">Learn more, Pay less. </span>
+        <span class="fs-4 px-3 text-secondary align-self-center">Special Badge for you. </span>
+        <button class="btn fs-5 btn-primary btn px-3 align-self-center" type="button" onclick="location.href='{% url 'elearning:premier' %}'" >Learn more{% bs_icon 'arrow-right-short' size='1.25em' %}</button>
+    </div>
+</div>
+
+    <div role="main" class="container py-4" >
                 <h1>This is homepage.</h1>
             </div>
     </main>
