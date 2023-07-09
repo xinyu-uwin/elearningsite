@@ -15,8 +15,13 @@ from .models import *
 
 # Create your views here.
 class HomepageView(View):
+
     def get(self,request,*args,**kwargs):
-        return render(request,'elearning/homepage.html')
+        rec_courses = HomepageRec.objects.all()
+        content = {
+            "rec_courses": rec_courses
+        }
+        return render(request,'elearning/homepage.html',content)
 
 
 def courselist(request):

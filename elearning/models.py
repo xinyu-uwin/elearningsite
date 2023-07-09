@@ -55,12 +55,18 @@ class Category(models.Model):
         return self.name
 
 
-
+def rename_course_cover(instance, filename):
+    # get the filename extension
+    ext = filename.split('.')[-1]
+    # generate a unique UUID and convert it to a string for the filename
+    filename = f"{uuid.uuid4()}.{ext}"
+    # return the new filename including the path
+    return os.path.join('course_cover', filename)
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
-    image = models.ImageField(default='/static/elearning/course-default.png')
+    image = models.ImageField(upload_to=rename_course_cover,default='course_cover/course-default.png')
     teacher = models.ForeignKey(Student, related_name='course_teacher',on_delete=models.CASCADE)
     category = models.ManyToManyField(Category,related_name='course_category')
     content = models.JSONField()
@@ -105,3 +111,8 @@ class Payment(models.Model):
         return str(self.id)
 
 
+class HomepageRec(models.Model):
+    course = models.ForeignKey(Course,related_name='recommend_course',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.course.name)

@@ -1,7 +1,61 @@
 {% extends 'elearning/base.html' %}
 {% block title %}Elearning{% endblock %}
 {% block content %}
-    <main role="main" class="container" style="padding-top: 30px;">
-<h1>This is homepage.</h1>
+    <main>
+        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="light">
+            <div class="carousel-indicators">
+                {% for rec_course in rec_courses %}
+                    {% if forloop.counter0 == 0 %}
+                        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                                class="active" aria-current="true" aria-label="Slide {{ forloop.counter }}" ></button>
+                    {% else %}
+                        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                                aria-label="Slide {{ forloop.counter }}"></button>
+
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+
+                {% for rec_course in rec_courses %}
+            {% if forloop.counter0 == 0 %}
+                <div class="carousel-item active justify-content-center" style="background-color: #0b5ed7">
+            {% else %}
+                <div class="carousel-item" style="background-color: #0b5ed7">
+            {% endif %}
+
+            <div style="
+                background-image: url('{{ rec_course.course.image.url }}');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 100%;
+            ">
+                <div class="container">
+                    <div class="carousel-caption text-start" style="text-shadow: 2px 2px 4px rgba(33, 33, 33, 0.6);" >
+                        <h1 style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.name }}</h1>
+                        <p class="opacity-85"
+                           style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ rec_course.course.description }}.</p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Course Detail</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div role="main" class="container" style="padding-bottom: 30px;">
+                <h1>This is homepage.</h1>
+            </div>
     </main>
 {% endblock %}

@@ -7,4 +7,5 @@ admin.site.register(Payment)
 admin.site.register(Category)
 admin.site.register(Course)
 admin.site.register(PremiePlan)
+admin.site.register(HomepageRec)
 
