@@ -72,6 +72,7 @@ class Course(models.Model):
     content = models.JSONField()
     price = models.DecimalField(max_digits=5,decimal_places=2)
     allow_premier = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -116,3 +117,61 @@ class HomepageRec(models.Model):
 
     def __str__(self):
         return str(self.course.name)
+
+class CourseEnrollment(models.Model):
+    ENROLLMENT_TYPES = (
+        ('Premium', 'Premium'),
+        ('Paid', 'Paid'),
+    )
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    enrolled_date = models.DateField(auto_now_add=True)
+    enrollment_type = models.CharField(max_length=10, choices=ENROLLMENT_TYPES)
+    progress = models.IntegerField(default=0)
+
+class Quiz(models.Model):
+    ANSWER_CHOICES = (
+        ('a', 'a'),
+        ('b', 'b'),
+        ('c', 'c'),
+        ('d', 'd'),
+    )
+    question = models.TextField()
+    img = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    ans = models.CharField(max_length=1, choices=ANSWER_CHOICES)
+
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    lesson_no = models.PositiveIntegerField()
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    video = models.FileField(upload_to='lesson_videos/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    quiz = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)
+
+class Files(models.Model):
+    FILE_TYPES = (
+        ('Document', 'Document'),
+        ('Image', 'Image'),
+        ('Other', 'Other'),
+    )
+
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    file_type = models.CharField(max_length=10, choices=FILE_TYPES)
+    file = models.FileField(upload_to='lesson_files/')
+
+class Certificate(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    issue_date = models.DateField(auto_now_add=True)
+
+class QuizResult(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    score = models.DecimalField(max_digits=5, decimal_places=2)
+    completed_at = models.DateTimeField(auto_now_add=True)
