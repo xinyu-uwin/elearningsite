@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from elearningsite import settings
-from forms import *
+from .forms import *
 from .models import *
 
 

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <main class="form-signin w-100 m-auto">
+    <main class="form-signin w-100 m-auto py-4">
         <form action="{% url 'elearning:signup' %}" method="post">{% csrf_token %}
             <img class="mb-4" src="{% static 'elearning/logo-blue.png' %}" alt="E-learning" height="57">
             <h1 class="h3 mb-3 fw-normal">Please sign up</h1>

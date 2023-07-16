@@ -1,11 +1,11 @@
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 .form-signin {
   max-width: 400px;
-  padding: 1rem;
+
 }
 
 .form-signin .form-floating:focus-within {
@@ -20,13 +20,14 @@ body {
 
 .form-signin input[type="password"] {
   margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 
 #floatingPassword1 {
-
+border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 #floatingPassword2 {
 border-top-left-radius: 0;

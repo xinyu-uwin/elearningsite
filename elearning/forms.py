@@ -1,9 +1,14 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+
 
 from .models import *
 
-
+# SignUpForm
 class SignUpForm(UserCreationForm):
     class Meta:
         model = Student
@@ -18,7 +23,7 @@ class SignUpForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={
                 'name': "Last_name", 'class': "form-control", 'id': "floatingPassword", 'placeholder': "Last name",'type':'second'}),
         }
-
+    # Password verification special fields
     password1 = forms.CharField(
 
         widget=forms.PasswordInput(
@@ -32,6 +37,7 @@ class SignUpForm(UserCreationForm):
     agreement = forms.BooleanField(required=True,widget=forms.CheckboxInput(attrs={'class':"form-check-input",'value':'agreement','id':"flexCheckDefault"}))
 
 
+# User form and Profile form is for updating profile
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -60,3 +66,4 @@ class ProfileForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
+

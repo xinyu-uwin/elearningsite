@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from django.core.mail import send_mail
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-81&-q$**o&^whf5_81wh*5m8t%b4lw#t=ik$&o+02#4m9eac-7'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'test@gmail.com'
+EMAIL_HOST_PASSWORD = 'testtesttest'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,3 +142,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #stripe
 STRIPE_PUBLISHABLE_KEY= 'pk_test_51ND8sLLYOpzhEaWbhCLLEswRTiKauWLTjjEMsbWblXRpmZfpQs3TvcL7GKh7BqujbccaDNHK8tJFrNH5Ze0qhpuQ00wWBtqD5o'
 STRIPE_SECRET_KEY = 'sk_test_51ND8sLLYOpzhEaWbofRmpgUVjNzc5A6lDRF0IzD8SiYZlkH3rsOhK5g8QpJE6uxCEbfmyidJC05javwLmyoMKMyZ0090az8CIh'
+
+
