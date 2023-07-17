@@ -18,8 +18,13 @@ class HomepageView(View):
 
     def get(self,request,*args,**kwargs):
         rec_courses = HomepageRec.objects.all()
+        courses = Course.objects.filter(is_featured=True)
+        top_courses = Course.objects.filter(is_featured=False)
         content = {
-            "rec_courses": rec_courses
+            "rec_courses": rec_courses,
+            "courses": courses,
+            "top_courses": top_courses,
+
         }
         return render(request,'elearning/homepage.html',content)
 
