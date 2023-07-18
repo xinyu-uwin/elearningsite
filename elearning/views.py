@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from elearningsite import settings
 from .forms import *
 from .models import *
+from django.urls import reverse
 
 
 
@@ -63,6 +64,8 @@ def userlogin(request):
 
     return render(request,'elearning/login.html')
 
+
+@login_required(login_url='elearning:login')
 def signout(request):
     logout(request)
     return redirect('elearning:homepage')
@@ -196,7 +199,8 @@ def premier(request):
     plans = PremiePlan.objects.all()
     return render(request,'elearning/premierplan.html',{"plans":plans})
 
-@login_required()
+
+@login_required(login_url='elearning:login')
 def profile(request):
     student = Student.objects.get(id=request.user.id)
     if request.method == 'POST':
@@ -220,3 +224,19 @@ def profile(request):
         profile_form = ProfileForm(instance=student)
 
     return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form})
+
+
+@login_required(login_url='elearning:login')
+def mypremier(request):
+    student = Student.objects.get(pk=request.user.id)
+    is_premier = student.is_premier
+    if is_premier:
+        exp_date = student.premier_expiration
+
+    return render(request,'elearning/mypremier.html',{"is_premier":is_premier,"exp_date":exp_date})
+
+@login_required(login_url='elearning:login')
+def mycourses(request):
+    student = Student.objects.get(pk=request.user.id)
+    enrolled_courses = CourseEnrollment.objects.filter(student=student)
+    return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})

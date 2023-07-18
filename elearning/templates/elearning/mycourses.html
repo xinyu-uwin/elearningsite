@@ -1,0 +1,101 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+
+
+
+{% block title %}My Premier - {{ user.username }}{% endblock %}
+{% block content %}
+    <main class="d-flex flex-nowrap">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary " style="width: 220px;min-height: 84vh">
+
+
+            <span class="fs-4 py-2 align-items-center">My Account</span>
+            <button class="btn fs-6 btn-outline-primary  ">Teacher portal</button>
+
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item align-middle">
+                    <a href="{% url 'elearning:profile' %}" class="nav-link align-baseline" aria-current="page">
+                        {% bs_icon 'person-bounding-box' %}
+                        &ensp;Profile
+                    </a>
+                </li>
+
+                <li class="nav-item  align-middle">
+                    <a href="{% url 'elearning:mypremier' %}" class="nav-link align-baseline" aria-current="page">
+                        {% bs_icon 'award' %}
+                        &ensp;My Premier
+                    </a>
+                </li>
+
+                <li class="nav-item align-middle">
+                    <a href="{% url 'elearning:mycourses' %}" class="nav-link active align-baseline" aria-current="page">
+                        {% bs_icon 'journals' %}
+                        &ensp;Courses
+                    </a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="container p-4" style="overflow-y: auto;height: 100%;">
+            <div>
+                <Span class="fs-2 mb-3 fw-normal align-self-center">Your Courses&ensp;</Span>
+                <p></p>
+
+                <div class="input-group mb-3 align-content-center" style="width:fit-content;">
+                    <span class="input-group-text ">Username</span>
+                    <span type="text" class="form-control" id="username" disabled>{{ user.username }}</span>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for course in enrolled_courses %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div style="cursor: hand;"
+                             onclick="location.href='{% url 'elearning:coursedetail' course.course.id %}'">
+                            <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                                <img class="bd-placeholder-img card-img-top"
+                                     style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+                                     src="{{ course.course.image.url }}">
+                            </div>
+
+                            {% if course.enrollment_type == 'Premium' %}
+                                <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill text-white"
+                                      style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Premier</span>
+                                {% else %}
+                                <span class="badge text-bg-primary rounded-pill"
+                                      style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Paid</span>
+                            {% endif %}
+
+                        {% if course.progress %}
+                                <span class="badge text-bg-success rounded-pill"
+                                      style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Completed</span>
+                                {% else %}
+                                <span class="badge text-bg-info rounded-pill"
+                                      style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Ongoing</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <p class="fw-bold"
+                               style="margin-top:-32px;overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ course.course.name }}</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-body-secondary">By: {{ course.course.teacher }}</small>
+                                <button type="button" class="btn btn-outline-primary"
+                                        onclick="location.href='{% url 'elearning:coursedetail' course.course.id %}'">Course
+                                    detail
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+        </div>
+    </main>
+{% endblock %}

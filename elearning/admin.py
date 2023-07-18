@@ -8,4 +8,5 @@ admin.site.register(Category)
 admin.site.register(Course)
 admin.site.register(PremiePlan)
 admin.site.register(HomepageRec)
+admin.site.register(CourseEnrollment)
 

@@ -1,6 +1,8 @@
 
 {% extends "elearning/base.html" %}
-{% block title %} Success {% endblock title%} 
+
+{% block title %} Success - E-Learning {% endblock title%}
+
 {% block content %}
 
 <div class="alert alert-success" role="alert">
@@ -9,7 +11,7 @@
       href="{% url 'elearning:courselist' %}"
       >Go to Products</a
     >
-    <body>
+
       <div class="vh-100 d-flex justify-content-center align-items-center">
           <div>
               <div class="mb-4 text-center">
@@ -32,6 +34,6 @@
 
               </div>
           </div>
-  </body>
+</div>
 </div>
 {% endblock content %}
