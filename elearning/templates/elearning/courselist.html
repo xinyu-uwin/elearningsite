@@ -5,6 +5,17 @@
 
         <h1 class="fs-2 py-2">All courses</h1>
 
+        <div>
+            <!-- <h4>Search Items</h4> -->
+            <form method="post" action="search/">
+                {% csrf_token %}
+                <!-- {{ form.as_p }} -->
+                <p><input type="text" name="name" id="name" placeholder="Search Here">
+                <button type="submit">Search</button></p>
+            </form>
+        </div>
+
+
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for course in courses %}
                 <div class="col">
