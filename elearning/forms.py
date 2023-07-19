@@ -67,3 +67,7 @@ class ProfileForm(forms.ModelForm):
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
 
+class EnrollForm(forms.ModelForm):
+    class Meta:
+        model = CourseEnrollment
+        fields = ('student', 'course', 'enrollment_type')

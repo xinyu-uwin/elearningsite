@@ -41,10 +41,33 @@ def courselist(request):
 class CourseDetailView(View):
     def get(self,request,*args,**kwargs):
         course = get_object_or_404(Course,pk=self.kwargs['course_id'])
+
+        try:
+            student = Student.objects.get(pk=request.user.id)
+            CourseEnrollment.objects.get(student=student,course=course)
+            is_enrolled = True
+        except:
+            is_enrolled = False
+
         content = {
-            'course':course
+            'course': course,
+            'is_enrolled':is_enrolled
         }
         return render(request,'elearning/coursedetail.html',content)
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs['course_id']
+        student = Student.objects.get(pk=request.user.id)
+        course = Course.objects.get(pk=course_id)
+        data = {
+            'student': student,
+            'course': course,
+            'enrollment_type': "Premium"
+        }
+        enroll_form = EnrollForm(data)
+        if enroll_form.is_valid():
+            enroll_form.save()
+        return redirect(reverse('elearning:coursedetail',args=[course_id]))
 
 def userlogin(request):
     if request.method == 'POST':
@@ -228,6 +251,7 @@ def profile(request):
 
 @login_required(login_url='elearning:login')
 def mypremier(request):
+    exp_date = ''
     student = Student.objects.get(pk=request.user.id)
     is_premier = student.is_premier
     if is_premier:

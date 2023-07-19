@@ -21,38 +21,50 @@
             {% csrf_token %}
             <button class="btn btn-dark rounded-pill px-3" type="submit">Buy this course</button>
         </form>
-        {#    You may add an if to determin if this has been bought#}
+         <form id="enrollCourse" action="{% url 'elearning:coursedetail' course.id %}" method="post"
+              style="display: none">
+            {% csrf_token %}
+            <button class="btn btn-dark rounded-pill px-3" type="submit">Enroll this Course</button>
+        </form>
 
         {% if user.is_authenticated %}
-            {% if course.allow_premier %}
-                {% if request.session.is_premier %}
-                    <button class="btn btn-primary d-inline-flex align-items-center" type="button">
-                        View Course Content
+            {% if is_enrolled %}
+                <button class="btn btn-primary d-inline-flex align-items-center" type="button">
+                    View Course Content
+                    {% bs_icon 'arrow-right-short' size='2em' %}
+                </button>
+            {% else %}
+                {% if course.allow_premier %}
+                    {% if request.session.is_premier %}
+                        <button type="submit" form="enrollCourse" class="btn btn-primary d-inline-flex align-items-center" name="enroll">
+                        Enroll this course
                         {% bs_icon 'arrow-right-short' size='2em' %}
-                    </button>
+                        </button>
+                    {% else %}
+                        <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy
+                            this
+                            course
+                        </button>
+                        <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                                onclick="location.href={% url 'elearning:premier' %}">
+                            Upgrade to Premier
+                        </button>
+                    {% endif %}
                 {% else %}
-
                     <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this
                         course
                     </button>
-                    <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
-                            onclick="location.href={% url 'elearning:premier' %}">
-                        Upgrade to Premier
-                    </button>
                 {% endif %}
-
-            {% else %}
-                <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
-                </button>
-
             {% endif %}
         {% else %}
             <button type="submit" form="buyCourse" class="btn btn-dark rounded-pill px-3" name="buy">Buy this course
             </button>
-            <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
-                    onclick="location.href={% url 'elearning:premier' %}">
-                Upgrade to Premier
-            </button>
+            {% if course.allow_premier %}
+                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                        onclick="location.href={% url 'elearning:premier' %}">
+                    Upgrade to Premier
+                </button>
+            {% endif %}
         {% endif %}
     </main>
 {% endblock %}
