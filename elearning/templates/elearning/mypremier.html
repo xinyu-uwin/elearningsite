@@ -1,0 +1,76 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+
+
+
+{% block title %}My Premier - {{ user.username }}{% endblock %}
+{% block content %}
+    <main class="d-flex flex-nowrap">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary " style="width: 220px;min-height: 84vh">
+
+
+            <span class="fs-4 py-2 align-items-center">My Account</span>
+            <button class="btn fs-6 btn-outline-primary  ">Teacher portal</button>
+
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item align-middle">
+                    <a href="{% url 'elearning:profile' %}" class="nav-link align-baseline" aria-current="page">
+                        {% bs_icon 'person-bounding-box' %}
+                        &ensp;Profile
+                    </a>
+                </li>
+
+                <li class="nav-item  align-middle">
+                    <a href="{% url 'elearning:mypremier' %}" class="nav-link active align-baseline" aria-current="page">
+                        {% bs_icon 'award' %}
+                        &ensp;My Premier
+                    </a>
+                </li>
+
+                <li class="nav-item align-middle">
+                    <a href="{% url 'elearning:mycourses' %}" class="nav-link align-baseline" aria-current="page">
+                        {% bs_icon 'journals' %}
+                        &ensp;Courses
+                    </a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="container p-4" style="overflow-y: auto;height: 100%;">
+            <div>
+                <Span class="fs-2 mb-3 fw-normal align-self-center">Your Premier Status&ensp;</Span>
+                <p></p>
+
+                <div class="input-group mb-3 align-content-center" style="width:fit-content;">
+                    <span class="input-group-text ">Username</span>
+                    <span type="text" class="form-control" id="username" disabled>{{ user.username }}</span>
+                </div>
+            </div>
+
+            {% if is_premier %}
+                <div class="d-flex py-2 align-items-center ">
+        <span class="fs-4  align-self-center">You are&ensp;</span>
+        <span class="fs-4 px-3 text-warning-emphasis bg-warning-subtle rounded-pill align-self-center" >Premier</span>
+                </div>
+                <span class="fs-6 mb-1 fw-normal align-self-center">Expiration date:</span>
+                <span class="fs-6 text-secondary">&ensp;{{ exp_date }}</span>
+<p></p>
+                <button class="btn fs-5 btn-primary btn px-3 align-self-center" type="button" onclick="location.href='{% url 'elearning:courselist' %}'" >Explore all courses{% bs_icon 'arrow-right-short' size='1.25em' %}</button>
+
+                {% else %}
+                <span class="fs-4  align-self-center">Sorry, You are not Premier member yet.</span>
+
+                <p></p>
+                <button class="btn btn-warning rounded-pill px-3" type="button" style="position: relative"
+                            onclick="location.href={% url 'elearning:premier' %}">
+                        Upgrade to Premier
+                    </button>
+
+            {% endif %}
+
+
+        </div>
+    </main>
+{% endblock %}

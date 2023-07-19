@@ -1,12 +1,17 @@
 
 {% extends "elearning/base.html" %}
+{% load bootstrap_icons %}
 {% block title %} Cancel {% endblock title%} 
 {% block content %}
-<div class="alert alert-info" role="alert">
-  Forgot to add something to your cart?
-  <a
-      href="{% url 'elearning:courselist' %}"
-      >Go to Products</a
-    >
+<div class="d-flex flex-column justify-content-center align-items-center py-5">
+<img src="/static/elearning/illustration-sorry-laptop.webp" style="height: 200px">
+    <p></p>
+<span class="fs-2  align-self-center">Sorry to see you cancel the checkout.</span>
+    <p></p>
+    <span class="fs-4  align-self-center text-secondary">Finding another course/plan?</span>
+<p></p>
+<button class="btn fs-5 btn-primary btn px-3 align-self-center" type="button" onclick="location.href='{% url 'elearning:courselist' %}'" >Explore Courses{% bs_icon 'arrow-right-short' size='1.25em' %}</button>
+<p></p>
+    <button class="btn fs-5 btn-primary btn px-3 align-self-center" type="button" onclick="location.href='{% url 'elearning:premier' %}'" >More Plans{% bs_icon 'arrow-right-short' size='1.25em' %}</button>
 </div>
 {% endblock content %}

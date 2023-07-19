@@ -21,6 +21,8 @@ urlpatterns = [
     path("cancel/", CancelView.as_view(), name="cancel"),
     path("premier/", views.premier, name="premier"),
     path("profile/", views.profile, name="profile"),
+    path("mypremier/", views.mypremier, name="mypremier"),
+    path("mycourses/", views.mycourses, name="mycourses"),
     path('password_reset/',auth_views.PasswordResetView.as_view(success_url=reverse_lazy('elearning:password_reset_done'), template_name='elearning/password_reset.html',subject_template_name='elearning/password_reset_subject.txt',
              email_template_name='elearning/password_reset_email.html',), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='elearning/password_reset_done.html'),name='password_reset_done'),

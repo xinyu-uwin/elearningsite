@@ -70,7 +70,94 @@
 </div>
 
     <div role="main" class="container py-4" >
-                <h1>This is homepage.</h1>
+        <h1 class="fs-2 py-2"> Featured
+           courses</h1>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for course in courses %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div style="cursor: hand;"
+                         onclick="location.href='{% url 'elearning:coursedetail' course.id %}'">
+                        <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                            <img class="bd-placeholder-img card-img-top"
+                                 style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+                                 src="{{ course.image.url }}">
+                        </div>
+                        <span class="badge text-bg-primary rounded-pill"
+                              style="width: fit-content;position: relative;bottom: 30px;left: 10px ">CA$ {{ course.price }}</span>
+                        {% if course.allow_premier %}
+                            <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill text-white"
+                                  style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Premier Free</span>
+                        {% endif %}
+                        {% if course.is_featured %}
+                        <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill text-white"
+                              style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">
+                              featured
+                            </span>
+                    {% endif %}
+                    
+                    </div>
+                    <div class="card-body">
+                        <p class="fw-bold"
+                           style="margin-top:-32px;overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ course.name }}</p>
+                        <p class="small"
+                           style="margin-top:-10px;overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">{{ course.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-body-secondary">By: {{ course.teacher }}</small>
+                            <button type="button" class="btn btn-outline-primary"
+                                    onclick="location.href='{% url 'elearning:coursedetail' course.id %}'">Course
+                                detail
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
+        {% endfor %}
+
+    </div>
+            </div>
+            <div role="main" class="container py-4" >
+              <h1 class="fs-2 py-2"> 
+                Top Courses
+              </h1>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+              {% for course in top_courses%}
+                  <div class="col">
+                      <div class="card shadow-sm">
+                          <div style="cursor: hand;"
+                               onclick="location.href='{% url 'elearning:coursedetail' course.id %}'">
+                              <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                                  <img class="bd-placeholder-img card-img-top"
+                                       style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+                                       src="{{ course.image.url }}">
+                              </div>
+                              <span class="badge text-bg-primary rounded-pill"
+                                    style="width: fit-content;position: relative;bottom: 30px;left: 10px ">CA$ {{ course.price }}</span>
+                              {% if course.allow_premier %}
+                                  <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill text-white"
+                                        style="width:fit-content;position: relative;bottom: 30px;margin-left: 10px">Premier Free</span>
+                              {% endif %}
+                              
+                            </div>
+                          <div class="card-body">
+                              <p class="fw-bold"
+                                 style="margin-top:-32px;overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ course.name }}</p>
+                              <p class="small"
+                                 style="margin-top:-10px;overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">{{ course.description }}</p>
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <small class="text-body-secondary">By: {{ course.teacher }}</small>
+                                  <button type="button" class="btn btn-outline-primary"
+                                          onclick="location.href='{% url 'elearning:coursedetail' course.id %}'">Course
+                                      detail
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+      
+          </div>
+                  </div>
     </main>
+    
 {% endblock %}

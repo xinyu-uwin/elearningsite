@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from elearningsite import settings
 from .forms import *
 from .models import *
+from django.urls import reverse
 
 
 
@@ -18,8 +19,13 @@ class HomepageView(View):
 
     def get(self,request,*args,**kwargs):
         rec_courses = HomepageRec.objects.all()
+        courses = Course.objects.filter(is_featured=True)
+        top_courses = Course.objects.filter(is_featured=False)
         content = {
-            "rec_courses": rec_courses
+            "rec_courses": rec_courses,
+            "courses": courses,
+            "top_courses": top_courses,
+
         }
         return render(request,'elearning/homepage.html',content)
 
@@ -37,10 +43,33 @@ def courselist(request):
 class CourseDetailView(View):
     def get(self,request,*args,**kwargs):
         course = get_object_or_404(Course,pk=self.kwargs['course_id'])
+
+        try:
+            student = Student.objects.get(pk=request.user.id)
+            CourseEnrollment.objects.get(student=student,course=course)
+            is_enrolled = True
+        except:
+            is_enrolled = False
+
         content = {
-            'course':course
+            'course': course,
+            'is_enrolled':is_enrolled
         }
         return render(request,'elearning/coursedetail.html',content)
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs['course_id']
+        student = Student.objects.get(pk=request.user.id)
+        course = Course.objects.get(pk=course_id)
+        data = {
+            'student': student,
+            'course': course,
+            'enrollment_type': "Premium"
+        }
+        enroll_form = EnrollForm(data)
+        if enroll_form.is_valid():
+            enroll_form.save()
+        return redirect(reverse('elearning:coursedetail',args=[course_id]))
 
 def userlogin(request):
     if request.method == 'POST':
@@ -60,6 +89,8 @@ def userlogin(request):
 
     return render(request,'elearning/login.html')
 
+
+@login_required(login_url='elearning:login')
 def signout(request):
     logout(request)
     return redirect('elearning:homepage')
@@ -193,7 +224,8 @@ def premier(request):
     plans = PremiePlan.objects.all()
     return render(request,'elearning/premierplan.html',{"plans":plans})
 
-@login_required()
+
+@login_required(login_url='elearning:login')
 def profile(request):
     student = Student.objects.get(id=request.user.id)
     if request.method == 'POST':
@@ -218,6 +250,22 @@ def profile(request):
 
     return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form})
 
+
+@login_required(login_url='elearning:login')
+def mypremier(request):
+    exp_date = ''
+    student = Student.objects.get(pk=request.user.id)
+    is_premier = student.is_premier
+    if is_premier:
+        exp_date = student.premier_expiration
+
+    return render(request,'elearning/mypremier.html',{"is_premier":is_premier,"exp_date":exp_date})
+
+@login_required(login_url='elearning:login')
+def mycourses(request):
+    student = Student.objects.get(pk=request.user.id)
+    enrolled_courses = CourseEnrollment.objects.filter(student=student)
+    return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})
 
 def search(request):
     if request.method == 'POST':
