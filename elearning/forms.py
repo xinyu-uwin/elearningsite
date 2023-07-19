@@ -67,6 +67,11 @@ class ProfileForm(forms.ModelForm):
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
 
+# Search Bar Form
+class SearchForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+
 class EnrollForm(forms.ModelForm):
     class Meta:
         model = CourseEnrollment
