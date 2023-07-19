@@ -71,3 +71,8 @@ class EnrollForm(forms.ModelForm):
     class Meta:
         model = CourseEnrollment
         fields = ('student', 'course', 'enrollment_type')
+
+class LessionForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ('lesson_no','title','description','video')

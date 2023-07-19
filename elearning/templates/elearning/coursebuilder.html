@@ -1,0 +1,11 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block content %}
+    <form id="lessionBuilder" action="{% url 'elearning:create-checkout-session' 'c' course.id %}" method="post" style="display: none">
+        {% csrf_token %}
+        {{ lession_form.as_p }}
+        <button class="btn btn-dark rounded-pill px-3" type="submit">Save</button>
+    </form>
+{% endblock %}

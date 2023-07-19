@@ -264,3 +264,16 @@ def mycourses(request):
     student = Student.objects.get(pk=request.user.id)
     enrolled_courses = CourseEnrollment.objects.filter(student=student)
     return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})
+
+
+@login_required(login_url='elearning:login')
+def coursedetailbuilder(request):
+    user = Student.objects.get(pk=request.user.id)
+    course = Course.objects.get(pk=request.course.id)
+    if request.method == 'POST':
+        lession_form = LessionForm(request.POST)
+        new_lessions_form = LessionForm()
+    else:
+        new_lessions_form = LessionForm()
+    lessions = course.Lession_set.all()
+    return render(request,'elerning/coursebuilder.html',{'lession_form':new_lessions_form,'lessions':lessions})
