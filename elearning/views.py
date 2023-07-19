@@ -25,9 +25,11 @@ class HomepageView(View):
 
 
 def courselist(request):
+    form=SearchForm()
     courses = Course.objects.all()
     content = {
-        'courses':courses
+        'courses':courses,
+        'form':form,
     }
     return render(request, 'elearning/courselist.html', content)
 
@@ -215,3 +217,22 @@ def profile(request):
         profile_form = ProfileForm(instance=student)
 
     return render(request, 'elearning/profile.html', {"student": student, "user_form": user_form, "profile_form": profile_form})
+
+
+def search(request):
+    if request.method == 'POST':
+        print('if block post')
+        form = SearchForm(request.POST)
+        results = ''
+        if form.is_valid():
+            search = form.data['name']
+            # print(search)
+            results = (Course.objects.filter(name__contains=search))
+            if not results:
+                return render(request, 'elearning/nosearch.html', {'error': 'No results found'})
+            form = SearchForm()
+    else:
+        print('else block post')
+        form = SearchForm()
+        results = ''
+    return render(request, 'elearning/search.html', {'form': form, 'results': results})

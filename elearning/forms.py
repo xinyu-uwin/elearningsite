@@ -67,3 +67,9 @@ class ProfileForm(forms.ModelForm):
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
 
+# Search Bar Form
+class SearchForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    # class Meta:
+    #     model = Course
+    #     fields = ('name',)
