@@ -8,9 +8,14 @@
     <div class="container">
     <div class="row">
       <div class="card h-100">
-          <p class="d-flex justify-content-end">
-          <a class="btn btn-outline-primary fs-6" href="">Edit Course details</a>
-        </p>
+{#          <p class="d-flex">#}
+{#          <a class="btn btn-outline-primary fs-6" href={% url 'elearning:teacher-portal'%}>Back</a>#}
+{#          <a class="btn btn-outline-primary fs-6" href={% url 'elearning:edit-course' course.id %}>Edit Course details</a>#}
+{#        </p>#}
+        <div class="d-flex justify-content-between m-3">
+        <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
+        <a class="btn btn-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course details</a>
+        </div>
 
         <img src="{{ course.image.url }}" class="card-img-top" alt="Course Image" style="max-height:50%; max-width:50%; align-self: center">
         <div class="card-body">
