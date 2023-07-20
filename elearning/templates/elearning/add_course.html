@@ -1,0 +1,18 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+    <h1>This is the page to add a course</h1>
+
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-md-12">
+                <form action={% url 'elearning:add-course' %} method="post" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

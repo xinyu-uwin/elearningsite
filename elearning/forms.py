@@ -67,3 +67,23 @@ class ProfileForm(forms.ModelForm):
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
 
+# class AddCourseForm(forms.ModelForm):
+#     class Meta:
+#         model = Course
+#         fields = ['name', 'description', 'image', 'category', 'price']
+#         widgets = {'category': forms.TextInput}
+
+
+
+class AddCourseForm(forms.ModelForm):
+
+    class Meta:
+        model = Course
+        fields = ['name', 'description', 'image', 'category', 'price']
+        widgets = {
+            'category': forms.SelectMultiple(attrs={'class': 'selectpicker', 'data-live-search': 'true'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AddCourseForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.all()

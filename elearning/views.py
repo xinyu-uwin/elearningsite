@@ -240,3 +240,31 @@ def mycourses(request):
     student = Student.objects.get(pk=request.user.id)
     enrolled_courses = CourseEnrollment.objects.filter(student=student)
     return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})
+
+
+def teacher_portal(request):
+    teacher = get_object_or_404(Student, pk=request.user.id)
+    courses = Course.objects.filter(teacher=teacher)
+    print(courses)
+    return render(request, 'elearning/teacherportal.html', {'courses': courses})
+
+def add_course(request):
+    if request.method == 'POST':
+        form = AddCourseForm(request.POST, request.FILES)  # Add request.FILES here
+        teacher = get_object_or_404(Student, pk=request.user.id)
+        form.instance.teacher = teacher
+        if form.is_valid():
+            course = form.save()
+            return HttpResponseRedirect(reverse('elearning:teacher-portal'))
+        else:
+            print(form.errors)
+            return HttpResponse("Invalid data")
+    else:
+        form = AddCourseForm()
+        return render(request, 'elearning/add_course.html', {'form': form})
+
+def teacher_viewcourse(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    categories = course.category.all()
+    categories = list(categories.values_list('name', flat=True))
+    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories})

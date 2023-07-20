@@ -65,11 +65,11 @@ def rename_course_cover(instance, filename):
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=300,blank=True)
+    description = models.TextField(max_length=300,blank=True)
     image = models.ImageField(upload_to=rename_course_cover,default='course_cover/course-default.png')
     teacher = models.ForeignKey(Student, related_name='course_teacher',on_delete=models.CASCADE)
     category = models.ManyToManyField(Category,related_name='course_category')
-    content = models.JSONField(blank=True,null=True)
+    # content = models.JSONField(blank=True,null=True)
     price = models.DecimalField(max_digits=5,decimal_places=2)
     allow_premier = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now=True)
