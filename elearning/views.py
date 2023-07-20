@@ -31,9 +31,11 @@ class HomepageView(View):
 
 
 def courselist(request):
+    form=SearchForm()
     courses = Course.objects.all()
     content = {
-        'courses':courses
+        'courses':courses,
+        'form':form,
     }
     return render(request, 'elearning/courselist.html', content)
 
@@ -41,10 +43,33 @@ def courselist(request):
 class CourseDetailView(View):
     def get(self,request,*args,**kwargs):
         course = get_object_or_404(Course,pk=self.kwargs['course_id'])
+
+        try:
+            student = Student.objects.get(pk=request.user.id)
+            CourseEnrollment.objects.get(student=student,course=course)
+            is_enrolled = True
+        except:
+            is_enrolled = False
+
         content = {
-            'course':course
+            'course': course,
+            'is_enrolled':is_enrolled
         }
         return render(request,'elearning/coursedetail.html',content)
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs['course_id']
+        student = Student.objects.get(pk=request.user.id)
+        course = Course.objects.get(pk=course_id)
+        data = {
+            'student': student,
+            'course': course,
+            'enrollment_type': "Premium"
+        }
+        enroll_form = EnrollForm(data)
+        if enroll_form.is_valid():
+            enroll_form.save()
+        return redirect(reverse('elearning:coursedetail',args=[course_id]))
 
 def userlogin(request):
     if request.method == 'POST':
@@ -228,6 +253,7 @@ def profile(request):
 
 @login_required(login_url='elearning:login')
 def mypremier(request):
+    exp_date = ''
     student = Student.objects.get(pk=request.user.id)
     is_premier = student.is_premier
     if is_premier:
@@ -240,6 +266,24 @@ def mycourses(request):
     student = Student.objects.get(pk=request.user.id)
     enrolled_courses = CourseEnrollment.objects.filter(student=student)
     return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})
+
+def search(request):
+    if request.method == 'POST':
+        print('if block post')
+        form = SearchForm(request.POST)
+        results = ''
+        if form.is_valid():
+            search = form.data['name']
+            # print(search)
+            results = (Course.objects.filter(name__contains=search))
+            if not results:
+                return render(request, 'elearning/nosearch.html', {'error': 'No results found'})
+            form = SearchForm()
+    else:
+        print('else block post')
+        form = SearchForm()
+        results = ''
+    return render(request, 'elearning/search.html', {'form': form, 'results': results})
 
 
 def teacher_portal(request):

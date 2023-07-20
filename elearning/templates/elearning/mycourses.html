@@ -49,7 +49,8 @@
                 </div>
             </div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% if enrolled_courses %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for course in enrolled_courses %}
                 <div class="col">
                     <div class="card shadow-sm">
@@ -94,6 +95,14 @@
             {% endfor %}
 
         </div>
+
+            {% else %}
+                <span class="fs-4  align-self-center">You don't have any course now.&ensp;</span>
+                <p></p>
+
+                <button class="btn fs-5 btn-primary btn px-3 align-self-center" type="button" onclick="location.href='{% url 'elearning:courselist' %}'" >Explore Courses{% bs_icon 'arrow-right-short' size='1.25em' %}</button>
+
+            {% endif %}
 
 
         </div>
