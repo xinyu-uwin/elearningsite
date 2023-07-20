@@ -13,8 +13,8 @@
 {#          <a class="btn btn-outline-primary fs-6" href={% url 'elearning:edit-course' course.id %}>Edit Course details</a>#}
 {#        </p>#}
         <div class="d-flex justify-content-between m-3">
-        <a class="btn btn-outline-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
-        <a class="btn btn-outline-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course details</a>
+        <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
+        <a class="btn btn-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course details</a>
         </div>
 
         <img src="{{ course.image.url }}" class="card-img-top" alt="Course Image" style="max-height:50%; max-width:50%; align-self: center">
