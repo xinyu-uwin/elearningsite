@@ -1,11 +1,9 @@
 {% extends 'elearning/base.html' %}
+{% load static %}
 <!-- search_results.html -->
 {% block content %}
-<html>
-<head>
     <title>Search Results</title>
-</head>
-<body>
+    <main role="main" class="container py-4" style="position: relative">
     <h1>Search Results</h1>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for course in results %}
@@ -43,6 +41,6 @@
         {% endfor %}
 
     </div>
-</body>
-</html>
+</main>
+
 {% endblock %}

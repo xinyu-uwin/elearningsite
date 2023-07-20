@@ -1,17 +1,21 @@
 {% extends 'elearning/base.html' %}
+{% load static %}
 {% block title %}All Courses - Elearning{% endblock %}
 {% block content %}
-    <main role="main" class="container py-4" style="position: relative" >
-
+<head>
+    <link rel="stylesheet" href="{% static 'elearning/search_styles.css' %}">
+</head>
+    <main role="main" class="container py-4" style="position: relative">
+        
         <h1 class="fs-2 py-2">All courses</h1>
 
-        <div>
+        <div class="search-container">
             <!-- <h4>Search Items</h4> -->
             <form method="post" action="search/">
                 {% csrf_token %}
                 <!-- {{ form.as_p }} -->
-                <p><input type="text" name="name" id="name" placeholder="Search Here">
-                <button type="submit">Search</button></p>
+                <p><input type="text" name="name" id="name" class="search-input" placeholder="Search Here">
+                <button type="submit" class="search-button">Search</button></p>
             </form>
         </div>
 
