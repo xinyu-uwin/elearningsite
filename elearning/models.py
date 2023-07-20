@@ -151,9 +151,12 @@ class Lesson(models.Model):
     lesson_no = models.PositiveIntegerField()
     title = models.CharField(max_length=100)
     description = models.TextField()
-    video = models.FileField(upload_to='lesson_videos/')
+    video = models.FileField(upload_to='lesson_videos/',blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class Files(models.Model):
     FILE_TYPES = (

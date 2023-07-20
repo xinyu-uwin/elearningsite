@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 import stripe
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +11,7 @@ from elearningsite import settings
 from .forms import *
 from .models import *
 from django.urls import reverse
+from django.core.serializers import serialize
 
 
 
@@ -269,16 +270,32 @@ def mycourses(request):
 
 
 @login_required(login_url='elearning:login')
-def coursedetailbuilder(request):
+def coursedetailbuilder(request,course_id,lesson_no):
     user = Student.objects.get(pk=request.user.id)
-    course = Course.objects.get(pk=request.course.id)
+    course = Course.objects.get(pk=course_id)
+    try:
+        lessons = Lesson.objects.filter(course_id=course.id)
+    except:
+        lessons=[]
     if request.method == 'POST':
-        lession_form = LessionForm(request.POST)
-        new_lessions_form = LessionForm()
-    else:
-        new_lessions_form = LessionForm()
-    lessions = course.Lession_set.all()
-    return render(request,'elerning/coursebuilder.html',{'lession_form':new_lessions_form,'lessions':lessions})
+        lesson_form = LessionForm(request.POST)
+        if lesson_form.is_valid():
+            lesson_f = lesson_form.save(commit=False)
+            # if lesson_no>len(lessons):
+            #     lesson_no=len(lessons)+1
+            lesson_f.course=course
+            lesson_f.lesson_no=lesson_no
+            lesson_f.created_at=datetime.now()
+            lesson_f.save()
+    try:
+        lesson = list(lessons.filter(lesson_no=lesson_no).values())[0]
+        new_lessons_form = LessionForm(initial=lesson)
+        lesson_no = lesson_no + 1
+    except:
+        new_lessons_form = LessionForm()
+    print(lessons)
+    print(course,lesson_no)
+    return render(request,'elearning/coursebuilder.html',{'lesson_form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
 
 def search(request):
     if request.method == 'POST':

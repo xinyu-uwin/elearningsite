@@ -3,9 +3,15 @@
 
 {% block title %}Profile - {{ user.username }}{% endblock %}
 {% block content %}
-    <form id="lessionBuilder" action="{% url 'elearning:create-checkout-session' 'c' course.id %}" method="post" style="display: none">
+    {{ course }}
+    {% for l in lessons %}
+        <p>{{ l.title }}</p>
+    {% endfor %}
+    <a href="{% url 'elearning:BuildCourseDetail' course.id lessons|length|add:1 %}">{{ lessons|length|add:1 }}</a>
+
+    <form action="{% url 'elearning:BuildCourseDetail' course.id lesson_no %}" method="post">
         {% csrf_token %}
-        {{ lession_form.as_p }}
-        <button class="btn btn-dark rounded-pill px-3" type="submit">Save</button>
+        {{ lesson_form.as_p }}
+        <button type="submit">Save</button>
     </form>
 {% endblock %}
