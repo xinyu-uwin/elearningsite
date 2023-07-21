@@ -4,6 +4,8 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
@@ -130,6 +132,11 @@ class CourseEnrollment(models.Model):
     enrolled_date = models.DateField(auto_now_add=True)
     enrollment_type = models.CharField(max_length=10, choices=ENROLLMENT_TYPES)
     progress = models.IntegerField(default=0)
+
+@receiver(post_save, sender=Payment)
+def create_course_enrollment(sender, instance, created, **kwargs):
+    if created and instance.type == 'c' and instance.status == '1':
+        CourseEnrollment.objects.create(student=instance.student, course=instance.course, enrollment_type='Paid')
 
 class Quiz(models.Model):
     ANSWER_CHOICES = (
