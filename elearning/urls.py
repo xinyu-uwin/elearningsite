@@ -28,12 +28,13 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='elearning/password_reset_done.html'),name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='elearning/password_reset_confirm.html',success_url=reverse_lazy('elearning:password_reset_complete')),name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='elearning/password_reset_complete.html'),name='password_reset_complete'),
-    path('buildcourse/<int:course_id>/<int:lesson_no>/',views.coursedetailbuilder, name='BuildCourseDetail'),
+    path('buildcourse/<int:course_id>/<int:lesson_no>/',views.coursedetailbuilder, name='teacher-buildcoursedetail'),
     path('course/search/', views.search, name='search'),
     path('teacher-portal/', views.teacher_portal, name='teacher-portal'),
     path('add-course/', views.add_course, name='add-course'),
     path('edit-course/<int:course_id>/', views.edit_course, name='edit-course'),
     path('delete-course/<int:course_id>/', views.delete_course, name='delete-course'),
     path('teacher/viewcourse/<int:course_id>', views.teacher_viewcourse, name='teacher-viewcourse'),
+    path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletecourse, name='teacher-deletelesson'),
 
               ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
