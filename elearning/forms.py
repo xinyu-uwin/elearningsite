@@ -67,6 +67,11 @@ class ProfileForm(forms.ModelForm):
                 'class': "form-control", 'placeholder':"Your phone number",}),
         }
 
+# Search Bar Form
+class SearchForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+
 class EnrollForm(forms.ModelForm):
     class Meta:
         model = CourseEnrollment
@@ -76,3 +81,24 @@ class LessionForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ('lesson_no','title','description','video')
+
+# class AddCourseForm(forms.ModelForm):
+#     class Meta:
+#         model = Course
+#         fields = ['name', 'description', 'image', 'category', 'price']
+#         widgets = {'category': forms.TextInput}
+
+
+
+class AddCourseForm(forms.ModelForm):
+
+    class Meta:
+        model = Course
+        fields = ['name', 'description', 'image', 'category', 'price']
+        widgets = {
+            'category': forms.SelectMultiple(attrs={'class': 'selectpicker', 'data-live-search': 'true'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AddCourseForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.all()

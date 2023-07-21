@@ -1,0 +1,71 @@
+{% extends 'elearning/base.html' %}
+{% block title %}Elearning - Teacher Portal{% endblock %}
+{% block content %}
+    <h1 class="fs-2 py-2 mx-3">Teacher portal</h1>
+    <p><a class="btn btn-lg btn-primary mx-3" href={% url 'elearning:add-course' %}>New Course</a></p>
+
+    <h3 class="fs-2 py-2 mx-3 ">Your Courses: </h3>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-3">
+            {% for course in courses %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div style="cursor: hand;"
+                             onclick="location.href='{% url 'elearning:coursedetail' course.id %}'">
+                            <div style="position: relative; width: 100%; padding-top: 56.25%;">
+                                <img class="bd-placeholder-img card-img-top"
+                                     style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+                                     src="{{ course.image.url }}">
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <p class="fw-bold"
+                               style="overflow: hidden;text-overflow: ellipsis; display:-webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{ course.name }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-primary"
+                                        onclick="location.href='{% url 'elearning:teacher-viewcourse' course.id %}'">
+                                    View course
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="showDeleteModal('{% url 'elearning:delete-course' course.id %}')">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+
+    <div class="modal fade" id="deleteCourseModal" tabindex="-1" aria-labelledby="deleteCourseModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCourseModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the course?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <a class="btn btn-danger" id="deleteCourseBtn" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to set the delete URL and show the modal
+        function showDeleteModal(deleteURL) {
+            document.getElementById('deleteCourseBtn').href = deleteURL;
+            $('#deleteCourseModal').modal('show');
+        }
+    </script>
+
+
+{% endblock %}

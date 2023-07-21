@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/bootstrap.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/sign-in.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'elearning/carousel.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'elearning/style.css' %}"/>
 
 </head>
 
@@ -52,6 +53,10 @@
                         <li><a class="dropdown-item" href="{% url 'elearning:mypremier' %}">My Premier</a></li>
                         <li>
                         <li><a class="dropdown-item" href="{% url 'elearning:mycourses' %}">My Courses</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-primary" href="{% url 'elearning:teacher-portal' %}">Teacher Portal</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
