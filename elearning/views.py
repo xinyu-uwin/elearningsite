@@ -284,3 +284,54 @@ def search(request):
         form = SearchForm()
         results = ''
     return render(request, 'elearning/search.html', {'form': form, 'results': results})
+
+@login_required(login_url='elearning:login')
+def teacher_portal(request):
+    teacher = get_object_or_404(Student, pk=request.user.id)
+    courses = Course.objects.filter(teacher=teacher)
+    print(courses)
+    return render(request, 'elearning/teacherportal.html', {'courses': courses})
+
+@login_required(login_url='elearning:login')
+def add_course(request):
+    heading = "Please enter details for new course: "
+    if request.method == 'POST':
+        form = AddCourseForm(request.POST, request.FILES)  # Add request.FILES here
+        teacher = get_object_or_404(Student, pk=request.user.id)
+        form.instance.teacher = teacher
+        if form.is_valid():
+            course = form.save()
+            return HttpResponseRedirect(reverse('elearning:teacher-portal'))
+        else:
+            print(form.errors)
+            return HttpResponse("Invalid data")
+    else:
+        form = AddCourseForm()
+        return render(request, 'elearning/add_course.html', {'form': form, 'heading': heading})
+
+@login_required(login_url='elearning:login')
+def edit_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    if request.method == 'POST':
+        form = AddCourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            # Redirect to the course detail page or any other page you wish
+            return redirect('elearning:teacher-viewcourse', course_id=course.id)
+    else:
+        form = AddCourseForm(instance=course)
+        return render(request, 'elearning/edit_course.html', {'form': form, 'course': course})
+
+
+@login_required(login_url='elearning:login')
+def delete_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    course.delete()
+    return HttpResponseRedirect(reverse('elearning:teacher-portal'))
+
+@login_required(login_url='elearning:login')
+def teacher_viewcourse(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    categories = course.category.all()
+    categories = list(categories.values_list('name', flat=True))
+    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories})
