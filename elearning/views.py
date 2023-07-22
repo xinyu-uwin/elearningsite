@@ -54,7 +54,10 @@ class CourseDetailView(View):
 
         content = {
             'course': course,
-            'is_enrolled':is_enrolled
+            'is_enrolled':is_enrolled,
+            'lesson_no':1,
+
+
         }
         return render(request,'elearning/coursedetail.html',content)
 
@@ -394,3 +397,12 @@ def teacher_viewcourse(request, course_id):
     categories = course.category.all()
     categories = list(categories.values_list('name', flat=True))
     return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories, 'lessons':lessons})
+
+@login_required(login_url='elearning:login')
+def course_content(request, course_id, lesson_no):
+    course = get_object_or_404(Course, pk=course_id)
+    lessons = Lesson.objects.filter(course_id=course.id)
+    lesson = get_object_or_404(Lesson, course_id=course.id, lesson_no=lesson_no)
+    print(lesson)
+    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons
+        , 'lesson': lesson})
