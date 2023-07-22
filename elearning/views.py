@@ -390,6 +390,7 @@ def delete_course(request, course_id):
 @login_required(login_url='elearning:login')
 def teacher_viewcourse(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
+    lessons = Lesson.objects.filter(course_id=course.id).order_by("lesson_no")
     categories = course.category.all()
     categories = list(categories.values_list('name', flat=True))
-    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories})
+    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories, 'lessons':lessons})
