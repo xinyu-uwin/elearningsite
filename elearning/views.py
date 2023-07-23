@@ -276,14 +276,16 @@ def mycourses(request):
 
 @login_required(login_url='elearning:login')
 def coursedetailbuilder(request,course_id,lesson_no):
-    print(course_id,lesson_no,request.method)
+    # print(course_id,lesson_no,request.method)
     user = Student.objects.get(pk=request.user.id)
     course = Course.objects.get(pk=course_id)
+    if course.teacher.id!=user.id:
+        return redirect('elearning:coursedetail', course_id=course.id)
     try:
         lessons = Lesson.objects.filter(course_id=course.id)
     except:
         lessons=[]
-    print(lessons)
+    # print(lessons)
     if request.method == 'POST':
         lesson_form = LessionForm(request.POST)
         if lesson_form.is_valid():
@@ -317,8 +319,8 @@ def coursedetailbuilder(request,course_id,lesson_no):
         # lesson_no = lesson_no + 1
     except:
         new_lessons_form = LessionForm()
-    print(lessons)
-    print(course,lesson_no)
+    # print(lessons)
+    # print(course,lesson_no)
     return render(request,'elearning/coursebuilder.html',{'form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
 
 @login_required(login_url='elearning:login')
