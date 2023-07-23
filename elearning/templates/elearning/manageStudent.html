@@ -1,0 +1,64 @@
+{% extends 'elearning/base.html' %}
+
+{% block content %}
+
+
+
+    <div class="container">
+    <div class="row">
+        <div class="card h-100">
+{#          <p class="d-flex">#}
+{#              <a class="btn btn-outline-primary fs-6" href={% url 'elearning:teacher-portal'%}>Back</a>#}
+{#              <a class="btn btn-outline-primary fs-6" href={% url 'elearning:edit-course' course.id %}>Edit Course details</a>#}
+{#          </p>#}
+        <div class="d-flex justify-content-between m-3">
+            <p>Student management system: </p>
+        </div>
+        {% if msg %}
+            <p>{{ msg }}</p>
+        {% endif %}
+        {% if student_list %}
+            <p>There are {{ student_num }} students in this course.</p>
+            <table class="table table-bordered">
+            <tr>
+                <td>Student Name</td>
+                {% for lesson in lesson_list %}
+                    <td>lesson Number</td>
+                    <td>Grade</td>
+                    <td>Finish Time</td>
+                {% endfor %}
+                <td>Last access time</td>
+                <td>Total finished</td>
+            </tr>
+            {% for student in student_list %}
+                    <tr>
+                        <td>{{ student.student.first_name }} {{ student.student.last_name }}</td>
+                        {% for lesson in lesson_list %}
+                                <td>lesson {{ lesson.lesson_no }} </td>
+                                {% for quiz in quiz_result_list %}
+                                    {% if quiz.student == student.student and quiz.quiz == lesson.quiz %}
+                                        <td color="red">{{ quiz.score }} </td>
+                                        <td>{{ quiz.completed_at }}</td>
+                                    {% endif %}
+                                {%  endfor %}
+                                {% if forloop.counter > student.progress %}
+                                    <td>not finished</td>
+                                    <td>not finished</td>
+                                {% endif %}
+                        {% endfor %}
+                        {% for time in access_time_list %}
+                            {% if time.student == student.student %}
+                                <td>{{ time.issue.date }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>{{ student.progress }}/{{ lesson_num }}</td>
+                    </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+
+    <button type="button" class="btn btn-outline-primary"
+                                        onclick="location.href='{% url 'elearning:teacher-viewcourse' course.id %}'">
+                                    back to course page
+                                </button>
+{% endblock %}

@@ -176,3 +176,12 @@ class QuizResult(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     score = models.DecimalField(max_digits=5, decimal_places=2)
     completed_at = models.DateTimeField(auto_now_add=True)
+
+
+class RegisterInfo(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    group_id = models.PositiveIntegerField()
+
+
+

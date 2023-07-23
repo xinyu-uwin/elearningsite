@@ -13,9 +13,11 @@
 {#          <a class="btn btn-outline-primary fs-6" href={% url 'elearning:edit-course' course.id %}>Edit Course details</a>#}
 {#        </p>#}
         <div class="d-flex justify-content-between m-3">
-        <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
-        <a class="btn btn-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course details</a>
-        </div>
+            <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
+            <a class="btn btn-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course details</a>
+
+            <a class="btn btn-primary fs-6" href="{% url 'elearning:student-management' course.id %}">Manage Students</a>
+        </div>edit-
 
         <img src="{{ course.image.url }}" class="card-img-top" alt="Course Image" style="max-height:50%; max-width:50%; align-self: center">
         <div class="card-body">
@@ -53,6 +55,7 @@
   <div class="card-body">
     <blockquote class="blockquote mb-0">
       <p>//Lessons will be listed here</p>
+        <a></a>
     </blockquote>
   </div>
 </div>

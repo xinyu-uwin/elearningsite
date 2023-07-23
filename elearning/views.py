@@ -2,6 +2,7 @@ from datetime import timedelta
 
 import stripe
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 from django.shortcuts import *
 from django.utils import timezone
 from django.views import View
@@ -335,3 +336,47 @@ def teacher_viewcourse(request, course_id):
     categories = course.category.all()
     categories = list(categories.values_list('name', flat=True))
     return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories})
+
+def manage_student(request, course_id):
+    if request.method == 'POST':
+        content = 0
+    course = get_object_or_404(Course, pk=course_id)
+    lesson_list = Lesson.objects.filter(course=course)
+    student_list = CourseEnrollment.objects.filter(course=course)
+    # registed_student_list = RegisterInfo.objects.filter(course=course)
+    access_time_list = Certificate.objects.filter(course=course)
+    student_finished = []
+    quiz_result_list = []
+    for lesson in lesson_list:
+        for student in student_list:
+            quiz_result = QuizResult.objects.filter(Q(quiz=lesson.quiz) & Q(student=student.student))
+            for quiz in quiz_result:
+                quiz_result_list.append(quiz)
+                print(quiz.score, quiz.student, quiz.quiz)
+                print(student.student, lesson.quiz)
+
+    print(quiz_result_list)
+
+    print('student management', len(student_list))
+          #, student_list[0].student.first_name)
+
+    if len(student_list) == 0:
+        msg = 'There are no student in your course '+course.name
+        return render(request, 'elearning/manageStudent.html', {'msg': msg,
+                                                                'course': course,
+                                                                'lesson_list': lesson_list,
+                                                                })
+    else:
+        msg = 'Here is the student list of course'+course.name
+        return render(request, 'elearning/manageStudent.html', {'msg': msg,
+                                                                'course': course,
+                                                                'lesson_list': lesson_list,
+                                                                'lesson_num': len(lesson_list),
+                                                                'student_list': student_list,
+                                                                'student_num': len(student_list),
+                                                                'quiz_result_list': quiz_result_list,
+                                                                'access_time_list': access_time_list
+                                                                # 'registed_student_list': registed_student_list,
+                                                                # 'registed_student_num': len(registed_student_list)
+                                                                })
+
