@@ -1,9 +1,7 @@
-from datetime import timedelta
-from time import sleep
+from datetime import timedelta, datetime
 
 import stripe
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Q
 from django.shortcuts import *
 from django.utils import timezone
 from django.views import View
@@ -14,6 +12,8 @@ from .forms import *
 from .models import *
 from django.urls import reverse
 from django.core.serializers import serialize
+from django.contrib import messages
+
 
 
 
@@ -56,7 +56,10 @@ class CourseDetailView(View):
 
         content = {
             'course': course,
-            'is_enrolled':is_enrolled
+            'is_enrolled':is_enrolled,
+            'lesson_no':1,
+
+
         }
         return render(request,'elearning/coursedetail.html',content)
 
@@ -143,12 +146,13 @@ class CreateCheckoutSessionView(View):
             description = '%s days Premier plan' % item.days
             print(item)
         else:
+            # Handle invalid type
             pass
 
         if request.user.is_authenticated:
-            # domain = "http://elearning.djcsyn.top"
-            domain = "http://127.0.0.1:8000"
-
+            domain = "https://yourdomain.com"
+            if settings.DEBUG:
+                domain = "http://127.0.0.1:8000"
 
             success_url = f"{domain}/success?session_id={{CHECKOUT_SESSION_ID}}&type={payment_type}&id={item.id}"
             checkout_session = stripe.checkout.Session.create(
@@ -181,7 +185,6 @@ class SuccessView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        sleep(3)
         session_id = request.GET.get('session_id')
         session = stripe.checkout.Session.retrieve(session_id)
 
@@ -190,7 +193,7 @@ class SuccessView(TemplateView):
 
 
         if session.payment_status == 'paid':
-            student = Student.objects.get(pk=request.user.id)
+            student = Student.objects.get(id=request.user.id)
             if payment_type == 'c':
                 course = Course.objects.get(id=item_id)
                 Payment.objects.create(
@@ -376,6 +379,7 @@ def edit_course(request, course_id):
         form = AddCourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
+            # Redirect to the course detail page or any other page you wish
             return redirect('elearning:teacher-viewcourse', course_id=course.id)
     else:
         form = AddCourseForm(instance=course)
@@ -400,51 +404,12 @@ def teacher_viewcourse(request, course_id):
 def course_content(request, course_id, lesson_no):
     course = get_object_or_404(Course, pk=course_id)
     lessons = Lesson.objects.filter(course_id=course.id)
-    lesson = get_object_or_404(Lesson, course_id=course.id, lesson_no=lesson_no)
-    print(lesson)
-    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons
-        , 'lesson': lesson})
+    try:
+        lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
+    except Lesson.DoesNotExist:
+        lesson = None
 
-def manage_student(request, course_id):
-    if request.method == 'POST':
-        content = 0
-    course = get_object_or_404(Course, pk=course_id)
-    lesson_list = Lesson.objects.filter(course=course)
-    student_list = CourseEnrollment.objects.filter(course=course)
-    # registed_student_list = RegisterInfo.objects.filter(course=course)
-    access_time_list = Certificate.objects.filter(course=course)
-    student_finished = []
-    quiz_result_list = []
-    for lesson in lesson_list:
-        for student in student_list:
-            quiz_result = QuizResult.objects.filter(Q(quiz=lesson.quiz) & Q(student=student.student))
-            for quiz in quiz_result:
-                quiz_result_list.append(quiz)
-                print(quiz.score, quiz.student, quiz.quiz)
-                print(student.student, lesson.quiz)
-
-    print(quiz_result_list)
-
-    print('student management', len(student_list))
-          #, student_list[0].student.first_name)
-
-    if len(student_list) == 0:
-        msg = 'There are no student in your course '+course.name
-        return render(request, 'elearning/manageStudent.html', {'msg': msg,
-                                                                'course': course,
-                                                                'lesson_list': lesson_list,
-                                                                })
-    else:
-        msg = 'Here is the student list of course'+course.name
-        return render(request, 'elearning/manageStudent.html', {'msg': msg,
-                                                                'course': course,
-                                                                'lesson_list': lesson_list,
-                                                                'lesson_num': len(lesson_list),
-                                                                'student_list': student_list,
-                                                                'student_num': len(student_list),
-                                                                'quiz_result_list': quiz_result_list,
-                                                                'access_time_list': access_time_list
-                                                                # 'registed_student_list': registed_student_list,
-                                                                # 'registed_student_num': len(registed_student_list)
-                                                                })
-
+    if lesson is None:
+        messages.info(request, 'No lessons available for now')
+        
+    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons, 'lesson': lesson})

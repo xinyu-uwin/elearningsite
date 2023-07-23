@@ -7,8 +7,6 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'elearning/coursebuilder_style.css' %}">
 
-
-
 <div class="container-fluid">
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 mt-4">
@@ -31,31 +29,33 @@
         </div>
         <div class="col py-2">
             <h3 class="mt-4 mb-4 text-center text-primary">Lesson Details</h3>
-            <h3 class="mt-4">
-                {{ lesson.title }}
-            </h3>
-            <div class="embed-responsive embed-responsive-16by9">
+            {% if lesson %}
+                <h3 class="mt-4">
+                    {{ lesson.title }}
+                </h3>
+                <div class="embed-responsive embed-responsive-16by9">
 
-                {% if lesson.video.url|slice:"-4:" == ".pdf" %}
-                <a href="{{ lesson.video.url }}">View PDF</a>
-            {% elif lesson.video.url|slice:"-4:" == ".jpg" or lesson.file.url|slice:"-4:" == ".png" %}
-                <img src="{{ lesson.video.url }}" alt="Image">
-            {% elif lesson.video.url|slice:"-4:" == ".mp4" %}
-                <video class="embed-responsive-item" src="{{ lesson.video.url }}" controls></video>
+                    {% if lesson.video.url|slice:"-4:" == ".pdf" %}
+                    <a href="{{ lesson.video.url }}">View PDF</a>
+                {% elif lesson.video.url|slice:"-4:" == ".jpg" or lesson.file.url|slice:"-4:" == ".png" %}
+                    <img src="{{ lesson.video.url }}" alt="Image">
+                {% elif lesson.video.url|slice:"-4:" == ".mp4" %}
+                    <video class="embed-responsive-item" src="{{ lesson.video.url }}" controls></video>
+                {% else %}
+                    <p>File not supported</p>
+                {% endif %}
+                </div>
+                <h4 class="mt-4 mb-4">
+                    {{ lesson.description }}
+                </h4>
             {% else %}
-                <p>File not supported</p>
+                <h3 class="mt-4">
+                    No lessons available for this course yet. Please check back later.
+                </h3>
             {% endif %}
-            
-
-</div>
-
-
-               
-            <h4 class="mt-4 mb-4">
-                {{ lesson.description }}
-            </h4>
         </div>
+       
     </div>
-</div>
+    
 
 {% endblock %}
