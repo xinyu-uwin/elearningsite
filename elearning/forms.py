@@ -76,6 +76,19 @@ class EnrollForm(forms.ModelForm):
     class Meta:
         model = CourseEnrollment
         fields = ('student', 'course', 'enrollment_type')
+
+class LessionForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['lesson_no','title','description','video','quiz']
+        # widgets = {
+        #     'description': forms.Textarea(attrs={
+        #         'class': 'my-input',
+        #         'placeholder': 'Enter your description',
+        #         'rows': 4,
+        #     }),
+        # }
+
 # class AddCourseForm(forms.ModelForm):
 #     class Meta:
 #         model = Course

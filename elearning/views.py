@@ -12,6 +12,7 @@ from elearningsite import settings
 from .forms import *
 from .models import *
 from django.urls import reverse
+from django.core.serializers import serialize
 
 
 
@@ -268,6 +269,63 @@ def mycourses(request):
     enrolled_courses = CourseEnrollment.objects.filter(student=student)
     return render(request,'elearning/mycourses.html',{"enrolled_courses":enrolled_courses})
 
+
+@login_required(login_url='elearning:login')
+def coursedetailbuilder(request,course_id,lesson_no):
+    print(course_id,lesson_no,request.method)
+    user = Student.objects.get(pk=request.user.id)
+    course = Course.objects.get(pk=course_id)
+    try:
+        lessons = Lesson.objects.filter(course_id=course.id)
+    except:
+        lessons=[]
+    print(lessons)
+    if request.method == 'POST':
+        lesson_form = LessionForm(request.POST)
+        if lesson_form.is_valid():
+            lesson = lessons.filter(lesson_no=lesson_no)
+            if len(lesson)>0:
+                lesson=lesson[0]
+                lesson.lesson_no=lesson_form.data['lesson_no']
+                lesson.title=lesson_form.data['title']
+                lesson.description=lesson_form.data['description']
+                lesson.video=lesson_form.data['video']
+                if lesson_form.data['quiz']=='':
+                    lesson.quiz=None
+                else:
+                    lesson.quiz=lesson_form.data['quiz']
+                lesson.save()
+            else:
+                lesson_f = lesson_form.save(commit=False)
+                # if lesson_no>len(lessons):
+                #     lesson_no=len(lessons)+1
+                lesson_f.course=course
+                lesson_f.created_at=datetime.datetime.now()
+                lesson_f.save()
+    try:
+        lessons = Lesson.objects.filter(course_id=course.id)
+    except:
+        lessons=[]
+    try:
+        lesson = list(lessons.filter(lesson_no=lesson_no).values())[0]
+        print(lesson)
+        new_lessons_form = LessionForm(initial=lesson)
+        # lesson_no = lesson_no + 1
+    except:
+        new_lessons_form = LessionForm()
+    print(lessons)
+    print(course,lesson_no)
+    return render(request,'elearning/coursebuilder.html',{'form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
+
+@login_required(login_url='elearning:login')
+def teacher_deletecourse(request,course_id,lesson_no):
+    lesson = Lesson.objects.filter(course_id=course_id,lesson_no=lesson_no)
+    if len(lesson)>0:
+        lesson.delete()
+    else:
+        print('no lesson with lesson Number',lesson_no,'found')
+    return HttpResponseRedirect(reverse("elearning:teacher-buildcoursedetail", args=(course_id,1)))
+
 def search(request):
     if request.method == 'POST':
         print('if block post')
@@ -333,9 +391,19 @@ def delete_course(request, course_id):
 @login_required(login_url='elearning:login')
 def teacher_viewcourse(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
+    lessons = Lesson.objects.filter(course_id=course.id).order_by("lesson_no")
     categories = course.category.all()
     categories = list(categories.values_list('name', flat=True))
-    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories})
+    return render(request, 'elearning/teacher_viewcourse.html', {'course': course, 'categories': categories, 'lessons':lessons})
+
+@login_required(login_url='elearning:login')
+def course_content(request, course_id, lesson_no):
+    course = get_object_or_404(Course, pk=course_id)
+    lessons = Lesson.objects.filter(course_id=course.id)
+    lesson = get_object_or_404(Lesson, course_id=course.id, lesson_no=lesson_no)
+    print(lesson)
+    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons
+        , 'lesson': lesson})
 
 def manage_student(request, course_id):
     if request.method == 'POST':

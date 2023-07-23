@@ -43,6 +43,10 @@
     </table>
 
         </div>
+        <div class="d-flex justify-content-end m-3">
+          <a class="btn btn-primary fs-6" href="{% url 'elearning:edit-course' course.id %}">Edit Course Cover</a>
+          </div>
+
       </div>
 
     </div>
@@ -54,10 +58,20 @@
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0">
-      <p>//Lessons will be listed here</p>
-        <a></a>
+      {% if lessons|length < 1 %}
+        <p>No lessons available for this course</p>
+      {% else %}
+      {% for l in lessons %}
+        <p><a href="{% url 'elearning:teacher-buildcoursedetail' course.id l.lesson_no %}">{{ l.lesson_no }} - {{ l.title }}</a></p>
+      {% endfor %}
+      {% endif %}
     </blockquote>
   </div>
+  <div class="d-flex justify-content-between m-3">
+    <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-portal' %}">Back</a>
+    <a class="btn btn-primary fs-6" href="{% url 'elearning:teacher-buildcoursedetail' course.id '1' %}">Edit Lesson Details</a>
+  </div>
+
 </div>
 
 
