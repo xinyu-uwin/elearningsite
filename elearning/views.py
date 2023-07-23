@@ -1,4 +1,5 @@
 from datetime import timedelta
+from time import sleep
 
 import stripe
 from django.contrib.auth import authenticate, login, logout
@@ -142,11 +143,11 @@ class CreateCheckoutSessionView(View):
             description = '%s days Premier plan' % item.days
             print(item)
         else:
-            # Handle invalid type
             pass
 
         if request.user.is_authenticated:
-            domain = "http://elearning.djcsyn.top"
+            # domain = "http://elearning.djcsyn.top"
+            domain = "http://127.0.0.1:8000"
 
 
             success_url = f"{domain}/success?session_id={{CHECKOUT_SESSION_ID}}&type={payment_type}&id={item.id}"
@@ -180,6 +181,7 @@ class SuccessView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
+        sleep(3)
         session_id = request.GET.get('session_id')
         session = stripe.checkout.Session.retrieve(session_id)
 
@@ -188,7 +190,7 @@ class SuccessView(TemplateView):
 
 
         if session.payment_status == 'paid':
-            student = Student.objects.get(id=request.user.id)
+            student = Student.objects.get(pk=request.user.id)
             if payment_type == 'c':
                 course = Course.objects.get(id=item_id)
                 Payment.objects.create(
