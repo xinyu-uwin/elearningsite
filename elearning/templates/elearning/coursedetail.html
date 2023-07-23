@@ -29,7 +29,9 @@
 
         {% if user.is_authenticated %}
             {% if is_enrolled %}
-                <button class="btn btn-primary d-inline-flex align-items-center" type="button">
+                <button class="btn btn-primary d-inline-flex align-items-center" type="button"
+                onclick="location.href='{% url 'elearning:course_content' course.id lesson_no %}'"
+                >
                     View Course Content
                     {% bs_icon 'arrow-right-short' size='2em' %}
                 </button>

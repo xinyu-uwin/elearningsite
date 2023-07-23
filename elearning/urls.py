@@ -31,10 +31,13 @@ urlpatterns = [
     path('teacher/buildcourse/<int:course_id>/<int:lesson_no>/',views.coursedetailbuilder, name='teacher-buildcoursedetail'),
     path('course/search/', views.search, name='search'),
     path('teacher-portal/', views.teacher_portal, name='teacher-portal'),
+    path('course-content/<int:course_id>/<int:lesson_no>/', views.course_content, name='course_content'),
+
     path('add-course/', views.add_course, name='add-course'),
     path('edit-course/<int:course_id>/', views.edit_course, name='edit-course'),
     path('delete-course/<int:course_id>/', views.delete_course, name='delete-course'),
     path('teacher/viewcourse/<int:course_id>', views.teacher_viewcourse, name='teacher-viewcourse'),
     path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletecourse, name='teacher-deletelesson'),
+    path('student-management/<int:course_id>', views.manage_student, name='student-management'),
 
               ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
