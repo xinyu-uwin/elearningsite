@@ -38,6 +38,6 @@ urlpatterns = [
     path('delete-course/<int:course_id>/', views.delete_course, name='delete-course'),
     path('teacher/viewcourse/<int:course_id>', views.teacher_viewcourse, name='teacher-viewcourse'),
     path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletecourse, name='teacher-deletelesson'),
-    path('student-management/<int:course_id>', views.manage_student, name='student-management'),
+    # path('student-management/<int:course_id>', views.manage_student, name='student-management'),
 
               ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
