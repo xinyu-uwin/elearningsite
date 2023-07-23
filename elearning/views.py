@@ -146,9 +146,8 @@ class CreateCheckoutSessionView(View):
             pass
 
         if request.user.is_authenticated:
-            domain = "https://yourdomain.com"
-            if settings.DEBUG:
-                domain = "http://127.0.0.1:8000"
+            domain = "http://elearning.djcsyn.top"
+
 
             success_url = f"{domain}/success?session_id={{CHECKOUT_SESSION_ID}}&type={payment_type}&id={item.id}"
             checkout_session = stripe.checkout.Session.create(
