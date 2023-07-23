@@ -374,7 +374,6 @@ def edit_course(request, course_id):
         form = AddCourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
-            # Redirect to the course detail page or any other page you wish
             return redirect('elearning:teacher-viewcourse', course_id=course.id)
     else:
         form = AddCourseForm(instance=course)
