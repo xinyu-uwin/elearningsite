@@ -81,6 +81,7 @@ class LessionForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ['lesson_no','title','description','video','quiz']
+        labels = {'video':'File (Video/Photo/Text)'}
         # widgets = {
         #     'description': forms.Textarea(attrs={
         #         'class': 'my-input',
