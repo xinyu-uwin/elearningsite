@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from time import sleep
 
 import stripe
@@ -14,6 +14,8 @@ from .forms import *
 from .models import *
 from django.urls import reverse
 from django.core.serializers import serialize
+from django.contrib import messages
+
 
 
 
@@ -56,7 +58,8 @@ class CourseDetailView(View):
 
         content = {
             'course': course,
-            'is_enrolled':is_enrolled
+            'is_enrolled':is_enrolled,
+            'lesson_no':1,
         }
         return render(request,'elearning/coursedetail.html',content)
 
@@ -405,10 +408,16 @@ def teacher_viewcourse(request, course_id):
 def course_content(request, course_id, lesson_no):
     course = get_object_or_404(Course, pk=course_id)
     lessons = Lesson.objects.filter(course_id=course.id)
-    lesson = get_object_or_404(Lesson, course_id=course.id, lesson_no=lesson_no)
-    print(lesson)
-    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons
-        , 'lesson': lesson})
+    try:
+        lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
+    except Lesson.DoesNotExist:
+        lesson = None
+
+    if lesson is None:
+        messages.info(request, 'No lessons available for now')
+
+    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons, 'lesson': lesson})
+
 
 def manage_student(request, course_id):
     if request.method == 'POST':
