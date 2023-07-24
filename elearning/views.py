@@ -300,10 +300,6 @@ def coursedetailbuilder(request,course_id,lesson_no):
                 else:
                     print(request.FILES['video'])
                     lesson.video=request.FILES['video']
-                if lesson_form.data['quiz']=='':
-                    lesson.quiz=None
-                else:
-                    lesson.quiz=lesson_form.data['quiz']
                 lesson.save()
             else:
                 lesson_f = lesson_form.save(commit=False)

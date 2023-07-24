@@ -80,7 +80,7 @@ class EnrollForm(forms.ModelForm):
 class LessionForm(forms.ModelForm):
     class Meta:
         model = Lesson
-        fields = ['lesson_no','title','description','video','quiz']
+        fields = ['lesson_no','title','description','video']
         labels = {'video':'File (Video/Photo/Text/Pdf)'}
         # widgets = {
         #     'description': forms.Textarea(attrs={
