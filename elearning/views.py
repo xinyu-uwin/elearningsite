@@ -287,7 +287,7 @@ def coursedetailbuilder(request,course_id,lesson_no):
         lessons=[]
     # print(lessons)
     if request.method == 'POST':
-        lesson_form = LessionForm(request.POST)
+        lesson_form = LessionForm(request.POST, request.FILES)
         if lesson_form.is_valid():
             lesson = lessons.filter(lesson_no=lesson_no)
             if len(lesson)>0:
@@ -295,7 +295,11 @@ def coursedetailbuilder(request,course_id,lesson_no):
                 lesson.lesson_no=lesson_form.data['lesson_no']
                 lesson.title=lesson_form.data['title']
                 lesson.description=lesson_form.data['description']
-                lesson.video=lesson_form.data['video']
+                if lesson_form.data.get('video-clear','')=='on':
+                    lesson.video=''
+                else:
+                    print(request.FILES['video'])
+                    lesson.video=request.FILES['video']
                 if lesson_form.data['quiz']=='':
                     lesson.quiz=None
                 else:
@@ -313,9 +317,8 @@ def coursedetailbuilder(request,course_id,lesson_no):
     except:
         lessons=[]
     try:
-        lesson = list(lessons.filter(lesson_no=lesson_no).values())[0]
-        print(lesson)
-        new_lessons_form = LessionForm(initial=lesson)
+        lesson = lessons.filter(lesson_no=lesson_no)[0]
+        new_lessons_form = LessionForm(instance=lesson)
         # lesson_no = lesson_no + 1
     except:
         new_lessons_form = LessionForm()

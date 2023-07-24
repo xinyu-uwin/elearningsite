@@ -6,12 +6,6 @@
 {% block content %}
 
 <div class="alert alert-success" role="alert">
-  Thanks for purchasing our product
-  <a
-      href="{% url 'elearning:courselist' %}"
-      >Go to Products</a
-    >
-
       <div class="vh-100 d-flex justify-content-center align-items-center">
           <div>
               <div class="mb-4 text-center">
@@ -27,9 +21,14 @@
                     You have successfully purchased the course. You can now access the course from your dashboard.
                   </p>
                   <button class="btn btn-primary"
-                      onclick="location.href='{% url 'elearning:profile' %}'"
+                      onclick="location.href='{% url 'elearning:homepage' %}'"
                   >
-                      Go to Dashboard
+                      Go to Homepage
+                </button>
+                <button class="btn btn-primary"
+                      onclick="location.href='{% url 'elearning:courselist' %}'"
+                  >
+                      Go to Course List
                 </button>
 
               </div>
