@@ -37,8 +37,8 @@
 
                     {% if lesson.video.url|slice:"-4:" == ".pdf" %}
                     <a href="{{ lesson.video.url }}">View PDF</a>
-                {% elif lesson.video.url|slice:"-4:" == ".jpg" or lesson.file.url|slice:"-4:" == ".png" %}
-                    <img src="{{ lesson.video.url }}" alt="Image">
+                {% elif lesson.video.url|slice:"-4:" == ".jpg" or lesson.video.url|slice:"-4:" == ".png" or lesson.video.url|slice:"-4:" == ".jpeg"%}
+                    <img src="{{ lesson.video.url }}" class="embed-responsive-item" alt="...">
                 {% elif lesson.video.url|slice:"-4:" == ".mp4" %}
                     <video class="embed-responsive-item" src="{{ lesson.video.url }}" controls></video>
                 {% else %}
