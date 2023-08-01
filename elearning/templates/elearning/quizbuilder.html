@@ -1,0 +1,62 @@
+{% extends 'elearning/base.html' %}
+{% load bootstrap_icons %}
+{% load static %}
+{% load bootstrap5 %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'elearning/coursebuilder_style.css' %}">
+
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-12">
+            <h1 class="fs-2 py-2">Please enter lesson details for <i>{{ course }}</i> :</h1>
+            <table class="my-table-style" style="top: 10px;">
+                <tr>
+                    <th><h4> 
+                        Lesson List
+                      </h4></th>
+                      <th><h4> 
+                        Lesson Details
+                      </h4></th>
+                </tr>
+            <tr>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <tr>
+                    <td style="position: absolute;">
+                        {% for l in lessons %}
+                            <ol><a href="{% url 'elearning:teacher-buildcoursedetail' course.id l.lesson_no %}">{{ l.title }}</a></ol>
+                        {% endfor %}
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-buildcoursedetail' course.id lessons|length|add:1 %}">Add New Lesson</a>
+                        </div>
+                    </td>
+                    <td>
+                    <form action="{% url 'elearning:teacher-buildcoursedetail' course.id lesson_no %}" method="post" class="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="d-flex justify-content-start">
+                            {% if quiz %}
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' lesson_no '1' %}">Add Quiz</a>
+                            {% else %}
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' lesson_no '1' %}">Modify Quiz</a>
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-deletequiz' course.id lesson_no %}">Delete Quiz</a>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-viewcourse' course.id %}">Back</a>
+                            <a class="btn btn-primary" href="{% url 'elearning:teacher-deletelesson' course.id lesson_no %}">Delete</a>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                    </td>
+                </tr>
+        
+                </div>    
+            </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

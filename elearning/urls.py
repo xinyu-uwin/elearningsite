@@ -40,6 +40,8 @@ urlpatterns = [
     path('teacher/viewcourse/<int:course_id>', views.teacher_viewcourse, name='teacher-viewcourse'),
     path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletelesson, name='teacher-deletelesson'),
     path('teacher/deletequiz/<int:lesson_id>/', views.teacher_deletequiz, name='teacher-deletequiz'),
-   path('student-management/<int:course_id>', views.manage_student, name='student-management'),
+    path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletecourse, name='teacher-deletelesson'),
+    path('student-management/<int:course_id>', views.manage_student, name='student-management'),
+    path('certificate/<int:course_id>/<int:lesson_no>/', views.certificate, name='certificate'),
 
               ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

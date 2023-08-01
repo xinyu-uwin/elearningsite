@@ -12,7 +12,7 @@
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 mt-4">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                 <h4 class="mt-4 mb-4 text-center text-primary">Course Content</h4>
-<div>
+            <div>
                 {% for l in lessons %}
 
                 <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
@@ -48,6 +48,19 @@
                 <h4 class="mt-4 mb-4">
                     {{ lesson.description }}
                 </h4>
+                <div>
+                    {% if lesson.lesson_no == lessons|length %}
+                        <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'-1' %}" class="btn btn-primary">Previous Lesson</a>
+                        <a href="{% url 'elearning:certificate' course.id lesson.lesson_no %}" class="btn btn-primary">Complete Course</a>
+                    {% else %}
+                        {% if lesson.lesson_no == 1 %}
+                            <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
+                        {% else %}
+                            <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'-1' %}" class="btn btn-primary">Previous Lesson</a>
+                            <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
+                        {% endif %}
+                    {% endif %}        
+                </div>
             {% else %}
                 <h3 class="mt-4">
                     No lessons available for this course yet. Please check back later.

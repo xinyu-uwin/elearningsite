@@ -333,9 +333,9 @@ def quizbuilder(request,lesson_id,question_no):# remaining
         return redirect('elearning:coursedetail', course_id=course.id)
     quiz = Quiz.objects.filter(lesson_id=lesson_id)
     # print(lessons)
-    if request.method == 'POST':
-        lesson_form = LessionForm(request.POST, request.FILES)
-        if lesson_form.is_valid():
+    if request.method == 'POST':# remaining
+        quiz_form = LessionForm(request.POST)
+        if quiz_form.is_valid():
             lesson = lessons.filter(lesson_no=lesson_no)
             if len(lesson)>0:
                 lesson=lesson[0]
@@ -356,18 +356,13 @@ def quizbuilder(request,lesson_id,question_no):# remaining
                 lesson_f.created_at=datetime.datetime.now()
                 lesson_f.save()
     try:
-        lessons = Lesson.objects.filter(course_id=course.id)
+        qz = quiz.filter(question_no=question_no)[0]
+        new_question_form = QuizForm(instance=qz)
     except:
-        lessons=[]
-    try:
-        lesson = lessons.filter(lesson_no=lesson_no)[0]
-        new_lessons_form = LessionForm(instance=lesson)
-        # lesson_no = lesson_no + 1
-    except:
-        new_lessons_form = LessionForm()
+        new_question_form = QuizForm()
     # print(lessons)
     # print(course,lesson_no)
-    return render(request,'elearning/coursebuilder.html',{'form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
+    return render(request,'elearning/quizbuilder.html',{'form':new_question_form,'quiz':quiz,'lesson_id':lesson_id})
 
 @login_required(login_url='elearning:login')
 def teacher_deletelesson(request,course_id,lesson_no):
@@ -379,13 +374,13 @@ def teacher_deletelesson(request,course_id,lesson_no):
     return HttpResponseRedirect(reverse("elearning:teacher-buildcoursedetail", args=(course_id,1)))
 
 @login_required(login_url='elearning:login')
-def teacher_deletequiz(request,course_id,lesson_no):# remaining
-    lesson = Lesson.objects.filter(course_id=course_id,lesson_no=lesson_no)
-    if len(lesson)>0:
-        lesson.delete()
+def teacher_deletequiz(request,course_id,lesson_no):
+    qz = Quiz.objects.filter(lesson__lesson_no=lesson_no)
+    if len(qz)>0:
+        qz.delete()
     else:
-        print('no lesson with lesson Number',lesson_no,'found')
-    return HttpResponseRedirect(reverse("elearning:teacher-buildcoursedetail", args=(course_id,1)))
+        print('no quiz with lesson no',lesson_no,'found')
+    return HttpResponseRedirect(reverse("elearning:teacher-buildcoursedetail", args=(course_id,lesson_no)))
 
 def search(request):
     if request.method == 'POST':
@@ -514,3 +509,12 @@ def manage_student(request, course_id):
                                                                 # 'registed_student_num': len(registed_student_list)
                                                                 })
 
+
+from django.shortcuts import render
+
+def certificate(request, course_id, lesson_no):
+    course = get_object_or_404(Course, pk=course_id)
+    lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
+    completion_date = datetime.date.today()
+    user = request.user
+    return render(request, 'elearning/certificate.html', {'completion_date': completion_date, 'user': user, 'lesson': lesson})

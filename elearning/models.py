@@ -157,6 +157,7 @@ class Quiz(models.Model):
         ('c', 'c'),
         ('d', 'd'),
     )
+    question_no = models.PositiveIntegerField()
     question = models.TextField()
     img = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
     option1 = models.CharField(max_length=100)
