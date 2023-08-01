@@ -39,5 +39,6 @@ urlpatterns = [
     path('teacher/viewcourse/<int:course_id>', views.teacher_viewcourse, name='teacher-viewcourse'),
     path('teacher/deletelesson/<int:course_id>/<int:lesson_no>/', views.teacher_deletecourse, name='teacher-deletelesson'),
     path('student-management/<int:course_id>', views.manage_student, name='student-management'),
+    path('certificate/', views.certificate, name='certificate'),
 
               ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

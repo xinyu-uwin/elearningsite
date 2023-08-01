@@ -458,3 +458,10 @@ def manage_student(request, course_id):
                                                                 # 'registed_student_num': len(registed_student_list)
                                                                 })
 
+
+from django.shortcuts import render
+
+def certificate(request):
+    completion_date = datetime.date.today()
+    
+    return render(request, 'elearning/certificate.html', {'completion_date': completion_date})
