@@ -461,7 +461,9 @@ def manage_student(request, course_id):
 
 from django.shortcuts import render
 
-def certificate(request):
+def certificate(request, course_id, lesson_no):
+    course = get_object_or_404(Course, pk=course_id)
+    lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
     completion_date = datetime.date.today()
-    
-    return render(request, 'elearning/certificate.html', {'completion_date': completion_date})
+    user = request.user
+    return render(request, 'elearning/certificate.html', {'completion_date': completion_date, 'user': user, 'lesson': lesson})

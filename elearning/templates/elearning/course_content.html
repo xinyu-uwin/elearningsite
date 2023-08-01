@@ -51,12 +51,14 @@
                 <div>
                     {% if lesson.lesson_no == lessons|length %}
                         <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'-1' %}" class="btn btn-primary">Previous Lesson</a>
-                        <a href="{% url 'elearning:certificate' %}" class="btn btn-primary">Complete Course</a>
+                        <a href="{% url 'elearning:certificate' course.id lesson.lesson_no %}" class="btn btn-primary">Complete Course</a>
                     {% else %}
-                        {% if lesson.lesson_no == 0 %}
+                        {% if lesson.lesson_no == 1 %}
+                            <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
+                        {% else %}
                             <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'-1' %}" class="btn btn-primary">Previous Lesson</a>
+                            <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
                         {% endif %}
-                        <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
                     {% endif %}        
                 </div>
             {% else %}

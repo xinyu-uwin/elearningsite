@@ -1,12 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Certificate</title>
-</head>
-<body>
-    <h1>Certificate of Completion</h1>
-    <p>This is to certify that John Doe has successfully completed the course.</p>
-    <p>Date: {{ completion_date }}</p>
-    <p>Signature: __________________________</p>
-</body>
-</html>
+{% extends "elearning/base.html" %}
+{% load static %}
+{% block title %} Certificate - E-Learning {% endblock title%}
+
+{% block content %}
+<style>
+    @media print {
+        header, footer, #print-button, #homepage, #courselist {
+            display: none;
+        }
+    }
+</style>
+    <link rel="stylesheet" href="{% static 'elearning/certificate.css' %}">
+    <div class="certificate">
+        <h1>Certificate of Completion</h1>
+        <p>This is to certify that {{ user.username }} has successfully completed the "{{ lesson.course }}" course.</p>
+        <p>Date: {{ completion_date }}</p>
+
+        <!-- Signature line -->
+        <div class="signature-line"></div>
+        <p>Signature:  e-Learning 8347-Group 6</p>
+    </div>
+    <div class="buttons">
+        <button id="homepage" class="btn btn-primary"
+            onclick="location.href='{% url 'elearning:homepage' %}'"
+        >
+            Go to Homepage
+        </button>
+        <button id="courselist" class="btn btn-primary"
+            onclick="location.href='{% url 'elearning:courselist' %}'"
+        >
+            Go to Course List
+        </button>
+        <button id="print-button" class="btn btn-primary">Print Certificate</button>
+    </div>
+    <script>
+        document.getElementById('print-button').addEventListener('click', function() {
+            // Hide header and footer during printing
+            document.getElementsByTagName('header')[0].style.display = 'none';
+            document.getElementsByTagName('footer')[0].style.display = 'none';
+
+            // Print the certificate
+            window.print();
+
+            // Show header and footer again after printing is done
+            document.getElementsByTagName('header')[0].style.display = 'block';
+            document.getElementsByTagName('footer')[0].style.display = 'block';
+        });
+    </script>
+{% endblock content %}
