@@ -322,8 +322,64 @@ def coursedetailbuilder(request,course_id,lesson_no):
     # print(course,lesson_no)
     return render(request,'elearning/coursebuilder.html',{'form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
 
+
 @login_required(login_url='elearning:login')
-def teacher_deletecourse(request,course_id,lesson_no):
+def quizbuilder(request,lesson_id,question_no):# remaining
+    # print(course_id,lesson_no,request.method)
+    user = Student.objects.get(pk=request.user.id)
+    lesson = Lesson.objects.get(pk=lesson_id)
+    course = lesson.course
+    if course.teacher.id!=user.id:
+        return redirect('elearning:coursedetail', course_id=course.id)
+    quiz = Quiz.objects.filter(lesson_id=lesson_id)
+    # print(lessons)
+    if request.method == 'POST':
+        lesson_form = LessionForm(request.POST, request.FILES)
+        if lesson_form.is_valid():
+            lesson = lessons.filter(lesson_no=lesson_no)
+            if len(lesson)>0:
+                lesson=lesson[0]
+                lesson.lesson_no=lesson_form.data['lesson_no']
+                lesson.title=lesson_form.data['title']
+                lesson.description=lesson_form.data['description']
+                if lesson_form.data.get('video-clear','')=='on':
+                    lesson.video=''
+                else:
+                    print(request.FILES['video'])
+                    lesson.video=request.FILES['video']
+                lesson.save()
+            else:
+                lesson_f = lesson_form.save(commit=False)
+                # if lesson_no>len(lessons):
+                #     lesson_no=len(lessons)+1
+                lesson_f.course=course
+                lesson_f.created_at=datetime.datetime.now()
+                lesson_f.save()
+    try:
+        lessons = Lesson.objects.filter(course_id=course.id)
+    except:
+        lessons=[]
+    try:
+        lesson = lessons.filter(lesson_no=lesson_no)[0]
+        new_lessons_form = LessionForm(instance=lesson)
+        # lesson_no = lesson_no + 1
+    except:
+        new_lessons_form = LessionForm()
+    # print(lessons)
+    # print(course,lesson_no)
+    return render(request,'elearning/coursebuilder.html',{'form':new_lessons_form,'lessons':lessons,'course':course,'lesson_no':lesson_no})
+
+@login_required(login_url='elearning:login')
+def teacher_deletelesson(request,course_id,lesson_no):
+    lesson = Lesson.objects.filter(course_id=course_id,lesson_no=lesson_no)
+    if len(lesson)>0:
+        lesson.delete()
+    else:
+        print('no lesson with lesson Number',lesson_no,'found')
+    return HttpResponseRedirect(reverse("elearning:teacher-buildcoursedetail", args=(course_id,1)))
+
+@login_required(login_url='elearning:login')
+def teacher_deletequiz(request,course_id,lesson_no):# remaining
     lesson = Lesson.objects.filter(course_id=course_id,lesson_no=lesson_no)
     if len(lesson)>0:
         lesson.delete()
