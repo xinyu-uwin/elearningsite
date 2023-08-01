@@ -467,3 +467,12 @@ def certificate(request, course_id, lesson_no):
     completion_date = datetime.date.today()
     user = request.user
     return render(request, 'elearning/certificate.html', {'completion_date': completion_date, 'user': user, 'lesson': lesson})
+
+def quiz(request, course_id, lesson_no):
+    # course = get_object_or_404(Course, pk=course_id)
+    # lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
+    # quiz = Quiz.objects.get(lesson=lesson)
+    # questions = Question.objects.filter(quiz=quiz)
+    return render(request, 'elearning/quiz.html')
+    # {'course': course, 'lesson': lesson, 'quiz': quiz, 'questions': questions}
+    

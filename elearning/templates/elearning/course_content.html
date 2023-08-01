@@ -24,6 +24,7 @@
                 </ul>
                 {% endfor %}
             </div>
+
              </div>
 
         </div>
@@ -60,6 +61,10 @@
                             <a href="{% url 'elearning:course_content' course.id lesson.lesson_no|add:'1' %}" class="btn btn-primary">Next Lesson</a>
                         {% endif %}
                     {% endif %}        
+                </div>
+
+                <div class="mt-4 mb-4 text-center text-primary">
+                    <a href="{% url 'elearning:quiz' course.id lesson.lesson_no %}" class="btn btn-primary">Take Quiz</a>
                 </div>
             {% else %}
                 <h3 class="mt-4">
