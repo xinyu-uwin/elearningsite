@@ -37,14 +37,23 @@
                 <div class="embed-responsive embed-responsive-16by9">
 
                     {% if lesson.video.url|slice:"-4:" == ".pdf" %}
-                    <a href="{{ lesson.video.url }}">View PDF</a>
+                    <a href="{{ lesson.video.url }}" class="btn btn-primary"
+                    >View PDF</a>
                 {% elif lesson.video.url|slice:"-4:" == ".jpg" or lesson.video.url|slice:"-4:" == ".png" or lesson.video.url|slice:"-4:" == ".jpeg"%}
-                    <img src="{{ lesson.video.url }}" class="embed-responsive-item" alt="...">
+                    <img src="{{ lesson.video.url }}" class="embed-responsive-item"
+                    style="width: 800px; height: 600px;"
+                     alt="...">
                 {% elif lesson.video.url|slice:"-4:" == ".mp4" %}
-                    <video class="embed-responsive-item" src="{{ lesson.video.url }}" controls></video>
+                    <video class="embed-responsive-item"
+                    style="width: 800px; height: 600px;"
+                     src="{{ lesson.video.url }}" controls></video>
+                {% elif lesson.video.url|slice:"-4:" == ".txt" or lesson.video.url|slice:"-5:" == ".docx" or lesson.video.url|slice:"-5:" == ".pptx" %}
+                    <a href="{{ lesson.video.url }}" class="btn btn-primary"
+                    >View Document</a>
                 {% else %}
                     <p>File not supported</p>
                 {% endif %}
+                    
                 </div>
                 <h4 class="mt-4 mb-4">
                     {{ lesson.description }}
