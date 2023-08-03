@@ -35,14 +35,13 @@
     </div>
     <script>
         document.getElementById('print-button').addEventListener('click', function() {
-            // Hide header and footer during printing
+            // Hiding header and footer during printing
             document.getElementsByTagName('header')[0].style.display = 'none';
             document.getElementsByTagName('footer')[0].style.display = 'none';
 
-            // Print the certificate
             window.print();
 
-            // Show header and footer again after printing is done
+            // Showing header and footer again after printing is done
             document.getElementsByTagName('header')[0].style.display = 'block';
             document.getElementsByTagName('footer')[0].style.display = 'block';
         });
