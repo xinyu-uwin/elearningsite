@@ -35,14 +35,17 @@
                     <form action="{% url 'elearning:teacher-buildcoursedetail' course.id lesson_no %}" method="post" class="form" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                        <div class="d-flex justify-content-start">
-                            {% if quiz %}
-                            <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' lesson_no '1' %}">Add Quiz</a>
-                            {% else %}
-                            <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' lesson_no '1' %}">Modify Quiz</a>
-                            <a class="btn btn-primary" href="{% url 'elearning:teacher-deletequiz' course.id lesson_no %}">Delete Quiz</a>
-                            {% endif %}
-                        </div>
+                        {% if is_filled %}
+                            <div class="d-flex justify-content-start">
+                                {% if quiz|length < 1 %}
+                                <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' course.id lesson_no '1' %}">Add Quiz</a>
+                                {% else %}
+                                <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' course.id lesson_no '1' %}">Modify Quiz</a>
+                                <a class="btn btn-primary" href="{% url 'elearning:teacher-deletequiz' course.id lesson_no %}">Delete Quiz</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        </br>
                         <div class="d-flex justify-content-between">
                             <a class="btn btn-primary" href="{% url 'elearning:teacher-viewcourse' course.id %}">Back</a>
                             <a class="btn btn-primary" href="{% url 'elearning:teacher-deletelesson' course.id lesson_no %}">Delete</a>
