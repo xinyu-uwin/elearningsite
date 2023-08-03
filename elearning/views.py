@@ -298,7 +298,8 @@ def coursedetailbuilder(request,course_id,lesson_no):
                 if lesson_form.data.get('video-clear','')=='on':
                     lesson.video=''
                 else:
-                    lesson.video=request.FILES['video']
+                    if request.FILES.get('video',None)!=None:
+                        lesson.video=request.FILES.get('video',None)
                 lesson.save()
             else:
                 lesson_f = lesson_form.save(commit=False)
