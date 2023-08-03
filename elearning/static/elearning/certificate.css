@@ -9,9 +9,6 @@ body {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 h1 {
@@ -37,7 +34,4 @@ p {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }
