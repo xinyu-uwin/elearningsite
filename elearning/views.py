@@ -460,6 +460,7 @@ def teacher_viewcourse(request, course_id):
 def course_content(request, course_id, lesson_no):
     course = get_object_or_404(Course, pk=course_id)
     lessons = Lesson.objects.filter(course_id=course.id)
+    quiz = Quiz.objects.filter(lesson_id=lesson_no)
     try:
         lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
     except Lesson.DoesNotExist:
@@ -468,7 +469,7 @@ def course_content(request, course_id, lesson_no):
     if lesson is None:
         messages.info(request, 'No lessons available for now')
 
-    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons, 'lesson': lesson})
+    return render(request, 'elearning/course_content.html', {'course': course, 'lessons': lessons, 'lesson': lesson, 'quiz': quiz})
 
 
 def manage_student(request, course_id):
@@ -524,11 +525,21 @@ def certificate(request, course_id, lesson_no):
     user = request.user
     return render(request, 'elearning/certificate.html', {'completion_date': completion_date, 'user': user, 'lesson': lesson})
 
+
+
 def quiz(request, course_id, lesson_no):
-    # course = get_object_or_404(Course, pk=course_id)
-    # lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
-    # quiz = Quiz.objects.get(lesson=lesson)
-    # questions = Question.objects.filter(quiz=quiz)
-    return render(request, 'elearning/quiz.html')
-    # {'course': course, 'lesson': lesson, 'quiz': quiz, 'questions': questions}
-    
+    course = get_object_or_404(Course, pk=course_id)
+    lesson = Lesson.objects.get(course_id=course.id, lesson_no=lesson_no)
+    quizzes = list(Quiz.objects.filter(lesson_id=lesson.id))
+    score = 0
+
+    if request.method == "POST":
+        for quiz in quizzes:
+            answer = request.POST.get(f'answer_{quiz.id}')
+            if answer == quiz.ans:
+                quiz.result = "Correct"
+                score += 1
+            else:
+                quiz.result = "Incorrect"
+
+    return render(request, 'elearning/quiz.html', {'course': course, 'lesson': lesson, 'quizzes': quizzes, 'score': score, 'max_score': len(quizzes)})

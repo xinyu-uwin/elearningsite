@@ -1,14 +1,41 @@
-
 {% extends "elearning/base.html" %}
 
-{% block title %} Success - E-Learning {% endblock title%}
+{% block title %} Quiz - E-Learning {% endblock title%}
 
 {% block content %}
-
 <div>
-    <h4>
-        This is the quiz page.
-    </h4>
+    <h4>This is the quiz page.</h4>
+    <form method="post">
+        {% csrf_token %}
+        {% for quiz in quizzes %}
+            <div>
+                <h5>{{ quiz.question }}</h5>
+                <div>
+                    <input type="radio" id="choice1_{{ quiz.id }}" name="answer_{{ quiz.id }}" value="a">
+                    <label for="choice1_{{ quiz.id }}">{{ quiz.option1 }}</label>
+                </div>
+                <div>
+                    <input type="radio" id="choice2_{{ quiz.id }}" name="answer_{{ quiz.id }}" value="b">
+                    <label for="choice2_{{ quiz.id }}">{{ quiz.option2 }}</label>
+                </div>
+                <div>
+                    <input type="radio" id="choice3_{{ quiz.id }}" name="answer_{{ quiz.id }}" value="c">
+                    <label for="choice3_{{ quiz.id }}">{{ quiz.option3 }}</label>
+                </div>
+                <div>
+                    <input type="radio" id="choice4_{{ quiz.id }}" name="answer_{{ quiz.id }}" value="d">
+                    <label for="choice4_{{ quiz.id }}">{{ quiz.option4 }}</label>
+                </div>
+                {% if quiz.result %}
+                    <p>Result: {{ quiz.result }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+    {% if score %}
+        <p>Your score: {{ score }}/{{ max_score }}</p>
+    {% endif %}
 </div>
 
 {% endblock content %}
