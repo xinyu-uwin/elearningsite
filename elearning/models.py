@@ -138,20 +138,6 @@ def create_course_enrollment(sender, instance, created, **kwargs):
     if created and instance.type == 'c' and instance.status == '1':
         CourseEnrollment.objects.create(student=instance.student, course=instance.course, enrollment_type='Paid')
 
-class Quiz(models.Model):
-    ANSWER_CHOICES = (
-        ('a', 'a'),
-        ('b', 'b'),
-        ('c', 'c'),
-        ('d', 'd'),
-    )
-    question = models.TextField()
-    img = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
-    option1 = models.CharField(max_length=100)
-    option2 = models.CharField(max_length=100)
-    option3 = models.CharField(max_length=100)
-    option4 = models.CharField(max_length=100)
-    ans = models.CharField(max_length=1, choices=ANSWER_CHOICES)
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -160,10 +146,28 @@ class Lesson(models.Model):
     description = models.TextField()
     video = models.FileField(upload_to='lesson_videos/',blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    quiz = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+class Quiz(models.Model):
+    ANSWER_CHOICES = (
+        ('a', 'a'),
+        ('b', 'b'),
+        ('c', 'c'),
+        ('d', 'd'),
+    )
+    question_no = models.PositiveIntegerField()
+    question = models.TextField()
+    img = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    ans = models.CharField(max_length=1, choices=ANSWER_CHOICES)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.question
 
 class Files(models.Model):
     FILE_TYPES = (

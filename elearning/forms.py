@@ -90,6 +90,12 @@ class LessionForm(forms.ModelForm):
         #     }),
         # }
 
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['question_no','question','img','option1','option2','option3','option4','ans']
+        labels = {'img':'Image (optional)','ans':'Answer'}
+
 # class AddCourseForm(forms.ModelForm):
 #     class Meta:
 #         model = Course
