@@ -25,7 +25,9 @@
                 <tr>
                     <td style="position: absolute;">
                         {% for l in lessons %}
+                        <div class="d-flex justify-content-between">
                             <ol><a href="{% url 'elearning:teacher-buildcoursedetail' course.id l.lesson_no %}">{{ l.title }}</a></ol>
+                        </div>
                         {% endfor %}
                         <div class="d-flex justify-content-between">
                             <a class="btn btn-primary" href="{% url 'elearning:teacher-buildcoursedetail' course.id lessons|length|add:1 %}">Add New Lesson</a>
@@ -41,6 +43,7 @@
                                 <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' course.id lesson_no '1' %}">Add Quiz</a>
                                 {% else %}
                                 <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' course.id lesson_no '1' %}">Modify Quiz</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-primary" href="{% url 'elearning:teacher-deletequiz' course.id lesson_no %}">Delete Quiz</a>
                                 {% endif %}
                             </div>

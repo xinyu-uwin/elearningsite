@@ -25,7 +25,7 @@
                 <tr>
                     <td style="position: absolute;">
                         {% for q in quiz %}
-                            <ol><a href="{% url 'elearning:teacher-buildquiz' course_id lesson.lesson_no q.question_no %}">{{ q.question }}</a></ol>
+                            <ol><a href="{% url 'elearning:teacher-buildquiz' course_id lesson.lesson_no q.question_no %}">{{ q.question_no }}</a></ol>
                         {% endfor %}
                         <div class="d-flex justify-content-between">
                             <a class="btn btn-primary" href="{% url 'elearning:teacher-buildquiz' course_id lesson.lesson_no quiz|length|add:1 %}">Add New Question</a>
